@@ -1,4 +1,4 @@
-/* Copyright 2006-2008 Joaquin M Lopez Munoz.
+/* Copyright 2006-2014 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -13,10 +13,10 @@
 #pragma once
 #endif
 
+#include <boost/flyweight/detail/perfect_fwd.hpp>
 #include <boost/flyweight/detail/value_tag.hpp>
 #include <boost/flyweight/key_value_fwd.hpp>
 #include <boost/mpl/assert.hpp>
-#include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/type_traits/aligned_storage.hpp>
 #include <boost/type_traits/alignment_of.hpp> 
 #include <boost/type_traits/is_same.hpp>
@@ -54,13 +54,17 @@ struct optimized_key_value:value_marker
   public:
     /* template ctors */
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_NAME explicit rep_type
-#define BOOST_FLYWEIGHT_PERFECT_FWD_BODY(n)          \
-  :value_ptr(0)                                      \
-{                                                    \
-  new(spc_ptr())key_type(BOOST_PP_ENUM_PARAMS(n,t)); \
+#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(n)                \
+  :value_ptr(0)                                                \
+{                                                              \
+  new(spc_ptr())key_type(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n)); \
 }
-#include <boost/flyweight/detail/perfect_fwd.hpp>
+
+  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
+    explicit rep_type,
+    BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY)
+
+#undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
 
     rep_type(const value_type& x):value_ptr(&x){}
 
@@ -159,10 +163,14 @@ struct regular_key_value:value_marker
   public:
     /* template ctors */
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_NAME explicit rep_type
-#define BOOST_FLYWEIGHT_PERFECT_FWD_BODY(n) \
-  :key(BOOST_PP_ENUM_PARAMS(n,t)),value_ptr(0){}
-#include <boost/flyweight/detail/perfect_fwd.hpp>
+#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(n) \
+  :key(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n)),value_ptr(0){}
+
+  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
+    explicit rep_type,
+    BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY)
+
+#undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
 
     rep_type(const value_type& x):key(no_key_from_value_failure()){}
 

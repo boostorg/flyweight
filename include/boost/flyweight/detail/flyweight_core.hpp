@@ -16,8 +16,8 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/detail/no_exceptions_support.hpp>
 #include <boost/detail/workaround.hpp>
+#include <boost/flyweight/detail/perfect_fwd.hpp>
 #include <boost/mpl/apply.hpp>
-#include <boost/preprocessor/repetition/enum_params.hpp>
 
 #if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
 #pragma warning(push)
@@ -119,12 +119,16 @@ public:
 
   /* insert overloads*/
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_NAME static handle_type insert
-#define BOOST_FLYWEIGHT_PERFECT_FWD_BODY(n)                \
-{                                                          \
-  return insert_rep(rep_type(BOOST_PP_ENUM_PARAMS(n,t))); \
+#define BOOST_FLYWEIGHT_PERFECT_FWD_INSERT_BODY(n)                  \
+{                                                                   \
+  return insert_rep(rep_type(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n))); \
 }
-#include <boost/flyweight/detail/perfect_fwd.hpp>
+
+  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
+    static handle_type insert,
+    BOOST_FLYWEIGHT_PERFECT_FWD_INSERT_BODY)
+
+#undef BOOST_FLYWEIGHT_PERFECT_FWD_INSERT_BODY
 
   static handle_type insert(const value_type& x){return insert_value(x);}
   static handle_type insert(value_type& x){return insert_value(x);}

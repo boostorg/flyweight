@@ -1,6 +1,6 @@
 /* Flyweight class. 
  *
- * Copyright 2006-2009 Joaquin M Lopez Munoz.
+ * Copyright 2006-2014 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -20,6 +20,7 @@
 #include <boost/detail/workaround.hpp>
 #include <boost/flyweight/detail/default_value_policy.hpp>
 #include <boost/flyweight/detail/flyweight_core.hpp>
+#include <boost/flyweight/detail/perfect_fwd.hpp>
 #include <boost/flyweight/factory_tag.hpp>
 #include <boost/flyweight/flyweight_fwd.hpp>
 #include <boost/flyweight/locking_tag.hpp>
@@ -35,7 +36,6 @@
 #include <boost/mpl/not.hpp>
 #include <boost/mpl/or.hpp>
 #include <boost/parameter/binding.hpp>
-#include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/swap.hpp>
 
@@ -188,10 +188,14 @@ public:
 
   /* template ctors */
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_NAME explicit flyweight
-#define BOOST_FLYWEIGHT_PERFECT_FWD_BODY(n)    \
-  :h(core::insert(BOOST_PP_ENUM_PARAMS(n,t))){}
-#include <boost/flyweight/detail/perfect_fwd.hpp>
+#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(n) \
+  :h(core::insert(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n))){}
+
+  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
+    explicit flyweight,
+    BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY)
+
+#undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
 
   flyweight& operator=(const flyweight& x){h=x.h;return *this;}
   flyweight& operator=(const value_type& x){return operator=(flyweight(x));}
