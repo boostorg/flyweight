@@ -22,6 +22,10 @@
 #include <boost/type_traits/is_same.hpp>
 #include <new>
 
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+#include <utility>
+#endif
+
 /* key-value policy: flywewight lookup is based on Key, which also serves
  * to construct Value only when needed (new factory entry). key_value is
  * used to avoid the construction of temporary values when such construction
@@ -72,6 +76,15 @@ struct optimized_key_value:value_marker
     {
       if(!x.value_ptr)new(key_ptr())key_type(*x.key_ptr());
     }
+
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+    rep_type(value_type&& x):value_ptr(&x){}
+
+    rep_type(rep_type&& x):value_ptr(x.value_ptr)
+    {
+      if(!x.value_ptr)new(key_ptr())key_type(std::move(*x.key_ptr()));
+    }
+#endif
 
     ~rep_type()
     {
@@ -130,6 +143,14 @@ struct optimized_key_value:value_marker
       if(!value_cted())value_ptr=new(spc_ptr())value_type(*value_ptr);
     }
 
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+    void move_value()const
+    {
+      if(!value_cted())value_ptr=
+        new(spc_ptr())value_type(std::move(const_cast<value_type&>(*value_ptr)));
+    }
+#endif
+
     mutable typename boost::aligned_storage<
       (sizeof(key_type)>sizeof(value_type))?
         sizeof(key_type):sizeof(value_type),
@@ -150,6 +171,13 @@ struct optimized_key_value:value_marker
   {
     r.copy_value();
   }
+
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+  static void move_value(const rep_type& r)
+  {
+    r.move_value();
+  }
+#endif
 };
 
 template<typename Key,typename Value>
@@ -173,8 +201,12 @@ struct regular_key_value:value_marker
 #undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
 
     rep_type(const value_type& x):key(no_key_from_value_failure()){}
-
     rep_type(const rep_type& x):key(x.key),value_ptr(0){}
+
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+    rep_type(value_type&& x):key(no_key_from_value_failure()){}
+    rep_type(rep_type&& x):key(std::move(x.key)),value_ptr(0){}
+#endif
 
     ~rep_type()
     {
@@ -225,7 +257,16 @@ struct regular_key_value:value_marker
     r.construct_value();
   }
 
+  /* copy_value() and move_value() can't really ever be called, provided to avoid
+   * compile errors (it is the no_key_from_value_failure compile error we want to
+   * appear in these cases).
+   */
+
   static void copy_value(const rep_type&){}
+
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+  static void move_value(const rep_type&){}
+#endif
 };
 
 } /* namespace flyweights::detail */

@@ -39,6 +39,10 @@
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/swap.hpp>
 
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+#include <utility>
+#endif
+
 #if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
 #pragma warning(push)
 #pragma warning(disable:4521)  /* multiple copy ctors */
@@ -186,6 +190,11 @@ public:
   flyweight(const flyweight& x):h(x.h){}
   flyweight(flyweight& x):h(x.h){}
 
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+  flyweight(const flyweight&& x):h(x.h){}
+  flyweight(flyweight&& x):h(x.h){}
+#endif
+
   /* template ctors */
 
 #define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(n) \
@@ -197,8 +206,26 @@ public:
 
 #undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
 
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)&&\
+    defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+
+  /* If variadic templates are supported these overloads are taken care of by
+   * flyweight perfect fwd ctor.
+   */
+
+  flyweight(const value_type&& x):h(core::insert(x)){}
+  flyweight(value_type&& x):h(core::insert(std::move(x))){}
+#endif
+
   flyweight& operator=(const flyweight& x){h=x.h;return *this;}
   flyweight& operator=(const value_type& x){return operator=(flyweight(x));}
+
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+  flyweight& operator=(value_type&& x)
+  {
+    return operator=(flyweight(std::move(x)));
+  }
+#endif
 
   /* convertibility to underlying type */
   

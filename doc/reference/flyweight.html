@@ -240,12 +240,15 @@ objects constructed from equivalent keys.
   <span class=identifier>flyweight</span><span class=special>();</span>
   <span class=identifier>flyweight</span><span class=special>(</span><span class=keyword>const</span> <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>
   <span class=identifier>flyweight</span><span class=special>(</span><span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>
+  <span class=identifier>flyweight</span><span class=special>(</span><span class=keyword>const</span> <span class=identifier>flyweight</span><span class=special>&amp;&amp;</span> <span class=identifier>x</span><span class=special>);</span>
+  <span class=identifier>flyweight</span><span class=special>(</span><span class=identifier>flyweight</span><span class=special>&amp;&amp;</span> <span class=identifier>x</span><span class=special>);</span>
 
   <span class=keyword>template</span><span class=special>&lt;</span><span class=keyword>typename</span><span class=special>...</span> <span class=identifier>Args</span><span class=special>&gt;</span>
   <span class=keyword>explicit</span> <span class=identifier>flyweight</span><span class=special>(</span><span class=identifier>Args</span><span class=special>&amp;&amp;...</span> <span class=identifier>args</span><span class=special>);</span>
 
   <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=keyword>operator</span><span class=special>=(</span><span class=keyword>const</span> <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>  
   <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=keyword>operator</span><span class=special>=(</span><span class=keyword>const</span> <span class=identifier>value_type</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>
+  <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=keyword>operator</span><span class=special>=(</span><span class=identifier>value_type</span><span class=special>&amp;&amp;</span> <span class=identifier>x</span><span class=special>);</span>
 
   <span class=comment>// convertibility to underlying type:</span>
 
@@ -349,7 +352,9 @@ with value <code>value_type(key_type())</code>.
 </blockquote>
 
 <code>flyweight(const flyweight&amp; x);<br>
-flyweight(flyweight&amp; x);</code>
+flyweight(flyweight&amp; x);<br>
+flyweight(const flyweight&amp;&amp; x);<br>
+flyweight(flyweight&amp;&amp; x);</code>
 
 <blockquote>
 <b>Effects:</b> Constructs a <code>flyweight</code> object with value
@@ -380,7 +385,8 @@ as <code>x</code>.<br>
 <b>Exception safety:</b> <code>nothrow</code>.
 </blockquote>
 
-<code>flyweight&amp; operator=(const value_type&amp; x);</code>
+<code>flyweight&amp; operator=(const value_type&amp; x);<br>
+flyweight&amp; operator=(value_type&amp;&amp; x);</code>
 
 <blockquote>
 <b>Requires:</b> If <code>flyweight</code> is key-value,
@@ -606,7 +612,7 @@ Key-value flyweights
 
 <br>
 
-<p>Revised January 19th 2014</p>
+<p>Revised January 24th 2014</p>
 
 <p>&copy; Copyright 2006-2014 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
