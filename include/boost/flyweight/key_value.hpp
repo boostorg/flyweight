@@ -13,6 +13,7 @@
 #pragma once
 #endif
 
+#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/flyweight/detail/perfect_fwd.hpp>
 #include <boost/flyweight/detail/value_tag.hpp>
 #include <boost/flyweight/key_value_fwd.hpp>
@@ -21,10 +22,6 @@
 #include <boost/type_traits/alignment_of.hpp> 
 #include <boost/type_traits/is_same.hpp>
 #include <new>
-
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-#include <utility>
-#endif
 
 /* key-value policy: flywewight lookup is based on Key, which also serves
  * to construct Value only when needed (new factory entry). key_value is
@@ -58,32 +55,32 @@ struct optimized_key_value:value_marker
   public:
     /* template ctors */
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(n)                \
-  :value_ptr(0)                                                \
-{                                                              \
-  new(spc_ptr())key_type(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n)); \
+#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(args)       \
+  :value_ptr(0)                                          \
+{                                                        \
+  new(spc_ptr())key_type(BOOST_FLYWEIGHT_FORWARD(args)); \
 }
 
-  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
+  BOOST_FLYWEIGHT_PERFECT_FWD(
     explicit rep_type,
     BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY)
 
 #undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
-
-    rep_type(const value_type& x):value_ptr(&x){}
 
     rep_type(const rep_type& x):value_ptr(x.value_ptr)
     {
       if(!x.value_ptr)new(key_ptr())key_type(*x.key_ptr());
     }
 
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-    rep_type(value_type&& x):value_ptr(&x){}
+    rep_type(const value_type& x):value_ptr(&x){}
 
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
     rep_type(rep_type&& x):value_ptr(x.value_ptr)
     {
       if(!x.value_ptr)new(key_ptr())key_type(std::move(*x.key_ptr()));
     }
+
+    rep_type(value_type&& x):value_ptr(&x){}
 #endif
 
     ~rep_type()
@@ -130,7 +127,12 @@ struct optimized_key_value:value_marker
       if(!value_cted()){
         /* value_ptr must be ==0, oherwise copy_value would have been called */
 
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+        key_type k(std::move(*key_ptr()));
+#else
         key_type k(*key_ptr());
+#endif
+
         key_ptr()->~key_type();
         value_ptr= /* guarantees key won't be re-dted at ~rep_type if the */
           static_cast<value_type*>(spc_ptr())+1; /* next statement throws */
@@ -191,21 +193,21 @@ struct regular_key_value:value_marker
   public:
     /* template ctors */
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(n) \
-  :key(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n)),value_ptr(0){}
+#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(args) \
+  :key(BOOST_FLYWEIGHT_FORWARD(args)),value_ptr(0){}
 
-  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
+  BOOST_FLYWEIGHT_PERFECT_FWD(
     explicit rep_type,
     BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY)
 
 #undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
 
-    rep_type(const value_type& x):key(no_key_from_value_failure()){}
     rep_type(const rep_type& x):key(x.key),value_ptr(0){}
+    rep_type(const value_type& x):key(no_key_from_value_failure()){}
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-    rep_type(value_type&& x):key(no_key_from_value_failure()){}
     rep_type(rep_type&& x):key(std::move(x.key)),value_ptr(0){}
+    rep_type(value_type&& x):key(no_key_from_value_failure()){}
 #endif
 
     ~rep_type()

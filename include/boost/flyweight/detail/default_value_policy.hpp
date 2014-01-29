@@ -13,12 +13,9 @@
 #pragma once
 #endif
 
+#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/flyweight/detail/perfect_fwd.hpp>
 #include <boost/flyweight/detail/value_tag.hpp>
-
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-#include <utility>
-#endif
 
 /* Default value policy: the key is the same as the value.
  */
@@ -39,18 +36,19 @@ struct default_value_policy:value_marker
   {
   /* template ctors */
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(n) \
-  :x(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n)){}
+#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(args) \
+  :x(BOOST_FLYWEIGHT_FORWARD(args)){}
 
-  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
+  BOOST_FLYWEIGHT_PERFECT_FWD(
     explicit rep_type,
     BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY)
 
 #undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
 
+    rep_type(const rep_type& r):x(r.x){}
+
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
     rep_type(rep_type&& r):x(std::move(r.x)){}
-    rep_type(value_type&& v):x(std::move(v)){}
 #endif
 
     operator const value_type&()const{return x;}

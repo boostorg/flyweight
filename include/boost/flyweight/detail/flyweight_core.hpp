@@ -19,10 +19,6 @@
 #include <boost/flyweight/detail/perfect_fwd.hpp>
 #include <boost/mpl/apply.hpp>
 
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-#include <utility>
-#endif
-
 #if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
 #pragma warning(push)
 #pragma warning(disable:4101)  /* unreferenced local vars */
@@ -123,12 +119,12 @@ public:
 
   /* insert overloads*/
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_INSERT_BODY(n)                  \
-{                                                                   \
-  return insert_rep(rep_type(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n))); \
+#define BOOST_FLYWEIGHT_PERFECT_FWD_INSERT_BODY(args)         \
+{                                                             \
+  return insert_rep(rep_type(BOOST_FLYWEIGHT_FORWARD(args))); \
 }
 
-  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
+  BOOST_FLYWEIGHT_PERFECT_FWD(
     static handle_type insert,
     BOOST_FLYWEIGHT_PERFECT_FWD_INSERT_BODY)
 
@@ -248,7 +244,7 @@ private:
   static handle_type insert_value(value_type&& x)
   {
     init();
-    entry_type       e((rep_type(std::move(x))));
+    entry_type       e(rep_type(std::move(x)));
     lock_type        lock(mutex());
     base_handle_type h(factory().insert(std::move(e)));
     BOOST_TRY{

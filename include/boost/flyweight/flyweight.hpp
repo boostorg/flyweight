@@ -39,10 +39,6 @@
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/swap.hpp>
 
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-#include <utility>
-#endif
-
 #if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
 #pragma warning(push)
 #pragma warning(disable:4521)  /* multiple copy ctors */
@@ -186,35 +182,21 @@ public:
 
   /* construct/copy/destroy */
   
-  flyweight():h(core::insert(key_type())){}
+#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(args) \
+  :h(core::insert(BOOST_FLYWEIGHT_FORWARD(args))){}
+
+  BOOST_FLYWEIGHT_PERFECT_FWD(
+    explicit flyweight,
+    BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY)
+
+#undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
+
   flyweight(const flyweight& x):h(x.h){}
   flyweight(flyweight& x):h(x.h){}
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
   flyweight(const flyweight&& x):h(x.h){}
   flyweight(flyweight&& x):h(x.h){}
-#endif
-
-  /* template ctors */
-
-#define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(n) \
-  :h(core::insert(BOOST_FLYWEIGHT_PERFECT_FWD_ARGS(n))){}
-
-  BOOST_FLYWEIGHT_PERFECT_FWD_OVERLOADS(
-    explicit flyweight,
-    BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY)
-
-#undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
-
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)&&\
-    defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
-
-  /* If variadic templates are supported these overloads are taken care of by
-   * flyweight perfect fwd ctor.
-   */
-
-  flyweight(const value_type&& x):h(core::insert(x)){}
-  flyweight(value_type&& x):h(core::insert(std::move(x))){}
 #endif
 
   flyweight& operator=(const flyweight& x){h=x.h;return *this;}
