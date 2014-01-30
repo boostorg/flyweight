@@ -39,6 +39,12 @@
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/swap.hpp>
 
+#if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
+#include <boost/utility/enable_if.hpp>
+#include <boost/type_traits/is_convertible.hpp>
+#include <initializer_list>
+#endif
+
 #if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
 #pragma warning(push)
 #pragma warning(disable:4521)  /* multiple copy ctors */
@@ -191,6 +197,15 @@ public:
 
 #undef BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY
 
+#if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
+  template<typename V>
+  flyweight(
+    std::initializer_list<V> list,
+    typename boost::enable_if<
+      boost::is_convertible<std::initializer_list<V>,key_type> >::type* =0):
+    h(core::insert(list)){} 
+#endif
+
   flyweight(const flyweight& x):h(x.h){}
   flyweight(flyweight& x):h(x.h){}
 
@@ -200,6 +215,17 @@ public:
 #endif
 
   flyweight& operator=(const flyweight& x){h=x.h;return *this;}
+
+#if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
+  template<typename V>
+  typename boost::enable_if<
+    boost::is_convertible<std::initializer_list<V>,key_type>,flyweight&>::type
+  operator=(std::initializer_list<V> list)
+  {
+    return operator=(flyweight(list));
+  }
+#endif
+
   flyweight& operator=(const value_type& x){return operator=(flyweight(x));}
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
