@@ -173,8 +173,5 @@ void test_multictor()
 
   flyweight<initctor> ff2{1u};
   BOOST_TEST(ff2.get().res==2);
-  
-  ff2={};
-  BOOST_TEST(ff2.get().res==-1);
 #endif
 }
