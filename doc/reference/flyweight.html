@@ -59,6 +59,8 @@ synopsis</a>
 </h2>
 
 <blockquote><pre>
+<span class=preprocessor>#include</span> <span class=special>&lt;</span><span class=identifier>iosfwd</span><span class=special>&gt;</span>
+
 <span class=keyword>namespace</span> <span class=identifier>boost</span><span class=special>{</span>
   
 <span class=keyword>namespace</span> <span class=identifier>flyweights</span><span class=special>{</span>
@@ -220,6 +222,8 @@ objects constructed from equivalent keys.
 </p>
 
 <blockquote><pre>
+<span class=preprocessor>#include</span> <span class=special>&lt;</span><span class=identifier>initializer_list</span><span class=special>&gt;</span>
+
 <span class=keyword>template</span><span class=special>&lt;</span>
   <span class=keyword>typename</span> <span class=identifier>T</span><span class=special>,</span>
   <span class=keyword>typename</span> <span class=identifier>Arg1</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Arg2</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Arg3</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Arg4</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Arg5</span>
@@ -240,6 +244,9 @@ objects constructed from equivalent keys.
   <span class=keyword>template</span><span class=special>&lt;</span><span class=keyword>typename</span><span class=special>...</span> <span class=identifier>Args</span><span class=special>&gt;</span>
   <span class=keyword>explicit</span> <span class=identifier>flyweight</span><span class=special>(</span><span class=identifier>Args</span><span class=special>&amp;&amp;...</span> <span class=identifier>args</span><span class=special>);</span>
 
+  <span class=keyword>template</span><span class=special>&lt;</span><span class=keyword>typename</span> <span class=identifier>V</span><span class=special>&gt;</span>
+  <span class=identifier>flyweight</span><span class=special>(</span><span class=identifier>std</span><span class=special>::</span><span class=identifier>initializer_list</span><span class=special>&lt;</span><span class=identifier>V</span><span class=special>&gt;</span> <span class=identifier>list</span><span class=special>);</span>
+
   <span class=identifier>flyweight</span><span class=special>(</span><span class=keyword>const</span> <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>
   <span class=identifier>flyweight</span><span class=special>(</span><span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>
   <span class=identifier>flyweight</span><span class=special>(</span><span class=keyword>const</span> <span class=identifier>flyweight</span><span class=special>&amp;&amp;</span> <span class=identifier>x</span><span class=special>);</span>
@@ -250,7 +257,11 @@ objects constructed from equivalent keys.
   <span class=keyword>explicit</span> <span class=identifier>flyweight</span><span class=special>(</span><span class=keyword>const</span> <span class=identifier>value_type</span><span class=special>&amp;&amp;</span> <span class=identifier>x</span><span class=special>);</span>
   <span class=keyword>explicit</span> <span class=identifier>flyweight</span><span class=special>(</span><span class=identifier>value_type</span><span class=special>&amp;&amp;</span> <span class=identifier>x</span><span class=special>);</span>
 
+  <span class=keyword>template</span><span class=special>&lt;</span><span class=keyword>typename</span> <span class=identifier>V</span><span class=special>&gt;</span>
+  <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=keyword>operator</span><span class=special>=(</span><span class=identifier>std</span><span class=special>::</span><span class=identifier>initializer_list</span><span class=special>&lt;</span><span class=identifier>V</span><span class=special>&gt;</span> <span class=identifier>list</span><span class=special>);</span>
+
   <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=keyword>operator</span><span class=special>=(</span><span class=keyword>const</span> <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>  
+
   <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=keyword>operator</span><span class=special>=(</span><span class=keyword>const</span> <span class=identifier>value_type</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>
   <span class=identifier>flyweight</span><span class=special>&amp;</span> <span class=keyword>operator</span><span class=special>=(</span><span class=identifier>value_type</span><span class=special>&amp;&amp;</span> <span class=identifier>x</span><span class=special>);</span>
 
@@ -362,6 +373,19 @@ up to a maximum number that
 can be globally <a href="#limit_num_ctor_args">configured</a> by the user.
 </blockquote>
 
+<code>template&lt;typename V&gt;<br>
+flyweight(std::initializer_list&lt;V&gt; list);</code>
+
+<blockquote>
+<b>Effects:</b> Constructs a <code>flyweight</code> object with the value
+<code>value_type(key_type(list))</code> if <code>flyweight</code> is key-value
+or <code>value_type(list)</code> otherwise.<br>
+<b>Note:</b> The specialization for a particular <code>std::initializer_list&lt;V'&gt;</code>
+of this member function template is not available unless
+<code>key_type</code> is constructible from
+<code>std::initializer_list&lt;V'&gt;</code>.
+</blockquote>
+
 <code>flyweight(const flyweight&amp; x);<br>
 flyweight(flyweight&amp; x);<br>
 flyweight(const flyweight&amp;&amp; x);<br>
@@ -391,6 +415,18 @@ copy of <code>x</code> or with a <code>value_type</code> constructed
 from a key equivalent to that associated to <code>x</code>. For non-key-value
 flyweights, <code>x</code> is its own key; for key-value flyweights,
 the key is extracted through use of an object of type <code>KeyFromValue</code>.<br>
+</blockquote>
+
+<code>template&lt;typename V&gt;<br>
+flyweight&amp; operator=(std::initializer_list&lt;V&gt; list);</code>
+
+<blockquote>
+<b>Effects:</b> <code>*this=flyweight(list)</code>.<br>
+<b>Returns:</b> <code>*this</code>.<br>
+<b>Note:</b> The specialization for a particular <code>std::initializer_list&lt;V'&gt;</code>
+of this member function template is not available unless
+<code>key_type</code> is constructible from
+<code>std::initializer_list&lt;V'&gt;</code>.
 </blockquote>
 
 <code>flyweight&amp; operator=(const flyweight&amp; x);</code>
