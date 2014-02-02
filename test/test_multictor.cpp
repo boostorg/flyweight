@@ -156,7 +156,7 @@ void test_multictor()
   flyweight<initctor> ff{};
   BOOST_TEST(ff.get().res==-1);
 
-  ff=flyweight<multictor>{initctor::arg(),1};
+  ff=flyweight<initctor>{initctor::arg(),1};
   BOOST_TEST(ff.get().res==-2);
 
   flyweight<initctor> ff0{initctor::arg(),initctor::arg()};
