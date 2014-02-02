@@ -44,8 +44,14 @@ Acknowledgements
 
 <p>
 <ul>
+  <li>In compilers with variadic template support, <code>boost::flyweight&lt;T&gt;</code> now provides
+    a perfectly forwarding constructor to <code>T::T</code> (previously an emulation
+    was used).</li>
+  <li><code>flyweight</code> now replicates the initializer-list constructors and assignment
+    operators of its underlying type.</li>
   <li>Fixed intermodule static initialization problem
     (ticket <a href="https://svn.boost.org/trac/boost/ticket/9553">#9553</a>).</li>
+  <li>Maintenance fixes.</li>
 </ul>
 </p>
 
@@ -124,7 +130,7 @@ Acknowledgements
 
 <br>
 
-<p>Revised January 15th 2014</p>
+<p>Revised February 1st 2014</p>
 
 <p>&copy; Copyright 2006-2014 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
