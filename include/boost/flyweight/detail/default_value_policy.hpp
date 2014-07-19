@@ -39,13 +39,13 @@ struct default_value_policy:value_marker
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)&&\
     !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)&&\
-    BOOST_WORKAROUND(__GNUC__,<=3)&&(__GNUC_MINOR__<=4)
+    BOOST_WORKAROUND(__GNUC__,<=4)&&(__GNUC__<4||__GNUC_MINOR__<=4)
 
 /* GCC 4.4.2 and prior seems to have a bug with the default ctor resulting
  * from the variadic template ctor below, as it fails to value-initialize x.
  */
 
-   rep_type():x(){}
+    rep_type():x(){}
 #endif
 
 #define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(args) \
