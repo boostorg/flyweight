@@ -214,8 +214,6 @@ public:
   flyweight(flyweight&& x):h(x.h){}
 #endif
 
-  flyweight& operator=(const flyweight& x){h=x.h;return *this;}
-
 #if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   template<typename V>
   typename boost::enable_if<
@@ -226,6 +224,7 @@ public:
   }
 #endif
 
+  flyweight& operator=(const flyweight& x){h=x.h;return *this;}
   flyweight& operator=(const value_type& x){return operator=(flyweight(x));}
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
