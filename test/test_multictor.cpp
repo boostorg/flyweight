@@ -84,7 +84,7 @@ struct initctor
   
   initctor(std::initializer_list<int> list):res(0)
   {
-    typedef std::initializer_list<int>::iterator iterator;
+    typedef const int* iterator;
     for(iterator it=list.begin(),it_end=list.end();it!=it_end;++it){
       res+=*it;
     }
@@ -92,7 +92,7 @@ struct initctor
   
   initctor(std::initializer_list<unsigned int> list):res(0)
   {
-    typedef std::initializer_list<unsigned int>::iterator iterator;
+    typedef const unsigned int* iterator;
     for(iterator it=list.begin(),it_end=list.end();it!=it_end;++it){
       res+=(int)(*it)*2;
     }
