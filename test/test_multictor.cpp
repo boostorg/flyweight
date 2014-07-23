@@ -74,6 +74,20 @@ inline std::size_t hash_value(const multictor& x)
 
 #if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
 
+#if !defined(BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX)
+#define INIT0(_) {}
+#define INIT1(a) {a}
+#define INIT2(a,b) {a,b}
+#define INIT_LIST1(a) {a}
+#define INIT_LIST2(a,b) {a,b}
+#else
+#define INIT0(_) ()
+#define INIT1(a) (a)
+#define INIT2(a,b) (a,b)
+#define INIT_LIST1(a) ({a})
+#define INIT_LIST2(a,b) ({a,b})
+#endif
+
 struct initctor
 {
   struct arg{arg(int= 0){}};
@@ -153,25 +167,25 @@ void test_multictor()
   BOOST_TEST(f4==m4);
 
 #if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
-  flyweight<initctor> ff{};
+  flyweight<initctor> ff INIT0();
   BOOST_TEST(ff.get().res==-1);
 
-  ff=flyweight<initctor>{initctor::arg(),1};
+  ff=flyweight<initctor> INIT2(initctor::arg(),1);
   BOOST_TEST(ff.get().res==-2);
 
-  flyweight<initctor> ff0{initctor::arg(),initctor::arg()};
+  flyweight<initctor> ff0 INIT2(initctor::arg(),initctor::arg());
   BOOST_TEST(ff0.get().res==-2);
   
   ff0={1};
   BOOST_TEST(ff0.get().res==1);
   
-  flyweight<initctor> ff1{1,2};
+  flyweight<initctor> ff1 INIT_LIST2(1,2);
   BOOST_TEST(ff1.get().res==3);
   
   ff1={1u,2u,3u};
   BOOST_TEST(ff1.get().res==12);
 
-  flyweight<initctor> ff2{1u};
+  flyweight<initctor> ff2 INIT_LIST1(1u);
   BOOST_TEST(ff2.get().res==2);
 #endif
 }
