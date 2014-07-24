@@ -81,7 +81,7 @@ inline std::size_t hash_value(const multictor& x)
 #define INIT_LIST1(a) {a}
 #define INIT_LIST2(a,b) {a,b}
 #else
-#define INIT0(_) ()
+#define INIT0(_)
 #define INIT1(a) (a)
 #define INIT2(a,b) (a,b)
 #define INIT_LIST1(a) ({a})
