@@ -50,6 +50,12 @@ Key-value flyweights
       </li>
     </ul>
   </li>
+  <li><a href="#serialize_synopsis">Header
+    <code>"boost/flyweight/serialize.hpp"</code> synopsis</a>
+    <ul>
+      <li><a href="#serialization">Serialization</a></li>
+    </ul>
+  </li>
 </ul>
 
 <h2>
@@ -641,6 +647,55 @@ arguments accepted by <code>flyweight</code>
 is 5.
 </blockquote>
 
+<h2>
+<a name="serialize_synopsis">Header
+</a><a href="../../../../boost/flyweight/serialize.hpp"><code>"boost/flyweight/serialize.hpp"</code></a>
+synopsis
+</h2>
+
+<p>
+<code>serialize.hpp</code> includes the necessary functionality for interoperability
+of <code>flyweight</code> with
+<a href="../../../serialization/index.html">Boost.Serialization</a>.
+</p>
+
+<h3><a name="serialization">Serialization</a></h3>
+
+<p>
+<code>flyweight</code>s can be archived and retrieved by means of
+<a href="../../../serialization/index.html">Boost.Serialization</a>. Regular as well
+as XML archives are supported.
+Serialization is done in an efficient manner so that saving equivalent <code>flyweight</code>s
+result in their common <code>key_type</code> value being stored only once, regardless
+of whether <code>key_type</code> is 
+<a href="../../../serialization/doc/traits.html#tracking">tracked</a> by
+Boost.Serialization or not.
+</p>
+
+Operation: saving of a <code>flyweight</code> object <code>x</code> to an
+output archive (XML archive) <code>ar</code>.
+
+<blockquote>
+<b>Requires:</b> <code>key_type</code> is serializable (XML-serializable).<br>
+<b>Effects:</b> The value <code>k=x.get_key()</code> is saved into <code>ar</code> as
+part of this operation or of a previous saving operation of a <code>flyweight</code>
+object with the same key.<br>
+<b>Exception safety:</b> Strong with respect to <code>x</code>. If an exception
+is thrown, <code>ar</code> may be left in an inconsistent state.
+</blockquote>
+
+Operation: loading of a <code>flyweight</code> <code>x'</code> from an
+input archive (XML archive) <code>ar</code>.
+
+<blockquote>
+<b>Requires:</b> <code>key_type</code> is serializable (XML-serializable).<br>
+<b>Effects:</b> <code>x'</code> is associated to a value constructed from a key
+equivalent to <code>k'</code>, a restored copy of the value <code>k</code>
+defined above.<br>
+<b>Exception safety:</b> Strong with respect to <code>x'</code>. If an exception
+is thrown, <code>ar</code> may be left in an inconsistent state.
+</blockquote>
+
 <hr>
 
 <div class="prev_link"><a href="index.html"><img src="../prev.gif" alt="Boost.Flyweight reference" border="0"><br>
@@ -655,7 +710,7 @@ Key-value flyweights
 
 <br>
 
-<p>Revised February 1st 2014</p>
+<p>Revised September 1st 2014</p>
 
 <p>&copy; Copyright 2006-2014 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
