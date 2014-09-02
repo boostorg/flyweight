@@ -52,7 +52,7 @@ void save(
   typedef ::boost::flyweights::detail::save_helper<flyweight> helper;
   typedef typename helper::size_type                          size_type;
 
-  helper& hlp=ar.template get_helper<helper>();
+  helper& hlp=ar.template get_helper<helper>(0);
 
   size_type n=hlp.find(f);
   ar<<make_nvp("item",n);
@@ -75,7 +75,7 @@ void load(
   typedef ::boost::flyweights::detail::load_helper<flyweight> helper;
   typedef typename helper::size_type                          size_type;
 
-  helper& hlp=ar.template get_helper<helper>();
+  helper& hlp=ar.template get_helper<helper>(0);
 
   size_type n=0;
   ar>>make_nvp("item",n);
