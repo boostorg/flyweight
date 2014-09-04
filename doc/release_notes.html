@@ -48,6 +48,14 @@ Acknowledgements
   <li>Added serialization support via
     <a href="../../serialization/index.html">Boost Serialization</a>.
   </li>
+  <li>
+    <code>flyweight</code> default constructor was made <code>explicit</code> in
+    Boost 1.56, which introduces a regression in some
+    <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#1518">initialization
+    scenarios</a>. The former non-<code>explicit</code>
+    default constructor has been restored
+    (ticket <a href="https://svn.boost.org/trac/boost/ticket/10439">#10439</a>).
+  </li>
 </ul>
 </p>
 
@@ -141,7 +149,7 @@ Acknowledgements
 
 <br>
 
-<p>Revised September 1st 2014</p>
+<p>Revised September 4th 2014</p>
 
 <p>&copy; Copyright 2006-2014 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 

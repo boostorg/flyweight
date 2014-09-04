@@ -247,6 +247,8 @@ objects constructed from equivalent keys.
     
   <span class=comment>// construct/copy/destroy:</span>
   
+  <span class=identifier>flyweight</span><span class=special>();</span>
+
   <span class=keyword>template</span><span class=special>&lt;</span><span class=keyword>typename</span><span class=special>...</span> <span class=identifier>Args</span><span class=special>&gt;</span>
   <span class=keyword>explicit</span> <span class=identifier>flyweight</span><span class=special>(</span><span class=identifier>Args</span><span class=special>&amp;&amp;...</span> <span class=identifier>args</span><span class=special>);</span>
 
@@ -361,6 +363,16 @@ constructed.<br>
 </blockquote>
 
 <h4><a name="constructors">Constructors, copy and assignment</a></h4>
+
+<code>flyweight();</code>
+
+<blockquote>
+<b>Effects:</b> Constructs a <code>flyweight</code> object with the value
+<code>value_type(key_type())</code>
+if <code>flyweight</code> is key-value
+or <code>value_type()</code>
+otherwise.
+</blockquote>
 
 <a name="fwd_ctor">
 <code>template&lt;typename... Args&gt;<br>
@@ -710,7 +722,7 @@ Key-value flyweights
 
 <br>
 
-<p>Revised September 1st 2014</p>
+<p>Revised September 3rd 2014</p>
 
 <p>&copy; Copyright 2006-2014 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
