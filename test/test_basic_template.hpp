@@ -60,6 +60,13 @@ void test_basic_template(
     BOOST_TEST(f2==cr2);
 #endif
 
+#if !defined(BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX)
+    /* testcase for https://svn.boost.org/trac/boost/ticket/10439 */
+
+    Flyweight f3={};
+    BOOST_TEST(f3==f2);
+#endif
+
     f1=f1;
     BOOST_TEST(f1==f1);
 
