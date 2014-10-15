@@ -436,6 +436,60 @@ BOOST_TEMPLATED_STREAM(istream,ElemType,Traits)& operator>>(
 
 } /* namespace boost */
 
+#if !defined(BOOST_FLYWEIGHT_DISABLE_HASH_SUPPORT)
+
+/* hash support */
+
+#if !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL)
+namespace std{
+
+template<
+  typename T,
+  typename Arg1,typename Arg2,typename Arg3,typename Arg4,typename Arg5
+>
+struct hash<boost::flyweight<T,Arg1,Arg2,Arg3,Arg4,Arg5> >
+{
+  typedef std::size_t           result_type;
+  typedef boost::flyweight<
+    T,Arg1,Arg2,Arg3,Arg4,Arg5> argument_type;
+
+  result_type operator()(const argument_type& x)const
+  {
+    typedef typename flyweight<
+      T,Arg1,Arg2,Arg3,Arg4,Arg5>::value_type value_type;
+
+    std::hash<const value_type*> h;
+    return h(&x.get());
+  }
+};
+
+} /* namespace std */
+#endif /* !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL) */
+
+namespace boost{
+#if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
+namespace flyweights{
+#endif
+
+template<
+  typename T,
+  typename Arg1,typename Arg2,typename Arg3,typename Arg4,typename Arg5
+>
+std::size_t hash_value(const flyweight<T,Arg1,Arg2,Arg3,Arg4,Arg5>& x)
+{
+  typedef typename flyweight<
+    T,Arg1,Arg2,Arg3,Arg4,Arg5>::value_type value_type;
+
+  boost::hash<const value_type*> h;
+  return h(&x.get());
+}
+
+#if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
+} /* namespace flyweights */
+#endif
+} /* namespace boost */
+#endif /* !defined(BOOST_FLYWEIGHT_DISABLE_HASH_SUPPORT) */
+
 #undef BOOST_FLYWEIGHT_COMPLETE_COMP_OPS
 #undef BOOST_FLYWEIGHT_TEMPL_ARGS
 #undef BOOST_FLYWEIGHT_TYPENAME_TEMPL_ARGS
