@@ -455,7 +455,7 @@ struct hash<boost::flyweight<T,Arg1,Arg2,Arg3,Arg4,Arg5> >
 
   result_type operator()(const argument_type& x)const
   {
-    typedef typename flyweight<
+    typedef typename boost::flyweight<
       T,Arg1,Arg2,Arg3,Arg4,Arg5>::value_type value_type;
 
     std::hash<const value_type*> h;
