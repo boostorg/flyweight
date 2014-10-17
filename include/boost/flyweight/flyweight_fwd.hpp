@@ -166,9 +166,18 @@ using flyweights::flyweight;
 
 #if !defined(BOOST_FLYWEIGHT_DISABLE_HASH_SUPPORT)
 #if !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL)
+
+#if !defined(_LIBCPP_VERSION)
+namespace std{
+template <class T> struct hash;
+}
+#else 
+/* As discussed in http://lists.boost.org/Archives/boost/2011/02/177218.php */
+#include <functional>
+#endif
+
 namespace std{
 
-template <class T> struct hash;
 template<
   typename T,
   typename Arg1,typename Arg2,typename Arg3,typename Arg4,typename Arg5
