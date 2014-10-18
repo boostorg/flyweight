@@ -178,11 +178,8 @@ template <class T> struct hash;
 
 namespace std{
 
-template<
-  typename T,
-  typename Arg1,typename Arg2,typename Arg3,typename Arg4,typename Arg5
->
-struct hash<boost::flyweight<T,Arg1,Arg2,Arg3,Arg4,Arg5> >;
+template<typename T,BOOST_FLYWEIGHT_TYPENAME_TEMPL_ARGS(_)>
+struct hash<boost::flyweight<T,BOOST_FLYWEIGHT_TEMPL_ARGS(_)> >;
 
 } /* namespace std */
 #endif /* !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL) */
@@ -192,11 +189,9 @@ namespace boost{
 namespace flyweights{
 #endif
 
-template<
-  typename T,
-  typename Arg1,typename Arg2,typename Arg3,typename Arg4,typename Arg5
->
-inline std::size_t hash_value(const flyweight<T,Arg1,Arg2,Arg3,Arg4,Arg5>& x);
+template<typename T,BOOST_FLYWEIGHT_TYPENAME_TEMPL_ARGS(_)>
+inline std::size_t hash_value(
+  const flyweight<T,BOOST_FLYWEIGHT_TEMPL_ARGS(_)>& x);
 
 #if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
 } /* namespace flyweights */
