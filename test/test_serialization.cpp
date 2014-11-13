@@ -1,4 +1,4 @@
-/* Boost.Flyweight of serialization capabilities.
+/* Boost.Flyweight test of serialization capabilities.
  *
  * Copyright 2006-2014 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
