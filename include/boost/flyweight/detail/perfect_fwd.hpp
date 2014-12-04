@@ -38,6 +38,7 @@
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
+#include <boost/preprocessor/seq/enum.hpp>
 #include <boost/preprocessor/seq/seq.hpp>
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
@@ -52,7 +53,7 @@ BOOST_PP_ENUM(n,BOOST_FLYWEIGHT_FORWARD_FORWARD_AUX,~)
 
 #define BOOST_FLYWEIGHT_FORWARD_ENUM(n) BOOST_PP_ENUM_PARAMS(n,t)
 
-#define BOOST_FLYWEIGHT_FORWARD_PASS(arg) arg
+#define BOOST_FLYWEIGHT_FORWARD_PASS(args) BOOST_PP_SEQ_ENUM(args)
 
 #define BOOST_FLYWEIGHT_FORWARD(args)\
 BOOST_PP_CAT(BOOST_FLYWEIGHT_FORWARD_,BOOST_PP_SEQ_HEAD(args))( \
@@ -81,10 +82,11 @@ BOOST_PP_SEQ_HEAD(BOOST_PP_SEQ_TAIL(args)))
 
 #define BOOST_FLYWEIGHT_PERFECT_FWD(name,body) \
 template<typename... Args>name(Args&&... args) \
-body((PASS)(std::forward<Args>(args)...))
+body((PASS)((std::forward<Args>(args)...)))
 
-#define BOOST_FLYWEIGHT_PERFECT_FWD_WITH_ARGS  \
-BOOST_FLYWEIGHT_PERFECT_FWD
+#define BOOST_FLYWEIGHT_PERFECT_FWD_WITH_ARGS(name,body)                 \
+template<typename Arg0,typename... Args>name(Arg0&& arg0,Args&&... args) \
+body((PASS)((std::forward<Arg0>(arg0))(std::forward<Args>(args)...)))
 
 #endif
 #endif
