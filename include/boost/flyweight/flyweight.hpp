@@ -47,6 +47,7 @@
 
 #if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
 #pragma warning(push)
+#pragma warning(disable:4520)  /* multiple default ctors */
 #pragma warning(disable:4521)  /* multiple copy ctors */
 #endif
 
