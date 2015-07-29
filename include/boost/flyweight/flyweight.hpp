@@ -448,6 +448,7 @@ template<typename T,BOOST_FLYWEIGHT_TYPENAME_TEMPL_ARGS(_)>
 BOOST_FLYWEIGHT_STD_HASH_STRUCT_KEYWORD
 hash<boost::flyweight<T,BOOST_FLYWEIGHT_TEMPL_ARGS(_)> >
 {
+public:
   typedef std::size_t                result_type;
   typedef boost::flyweight<
     T,BOOST_FLYWEIGHT_TEMPL_ARGS(_)> argument_type;
