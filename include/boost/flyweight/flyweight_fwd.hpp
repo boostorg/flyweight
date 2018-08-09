@@ -1,4 +1,4 @@
-/* Copyright 2006-2018 Joaquin M Lopez Munoz.
+/* Copyright 2006-2015 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -44,11 +44,6 @@ typename Arg##n##1,typename Arg##n##2,typename Arg##n##3, \
 typename Arg##n##4,typename Arg##n##5
 #define BOOST_FLYWEIGHT_TEMPL_ARGS(n) \
 Arg##n##1,Arg##n##2,Arg##n##3,Arg##n##4,Arg##n##5
-
-template<typename T,BOOST_FLYWEIGHT_TYPENAME_TEMPL_ARGS(_)>
-bool operator==(
-  const flyweight<T,BOOST_FLYWEIGHT_TEMPL_ARGS(_)>& x,
-  const flyweight<T,BOOST_FLYWEIGHT_TEMPL_ARGS(_)>& y);
 
 template<
   typename T1,BOOST_FLYWEIGHT_TYPENAME_TEMPL_ARGS(1),
