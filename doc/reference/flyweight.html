@@ -322,7 +322,7 @@ of <code>flyweight</code> is a <i>key-value</i> flyweight.
 <code>value_type</code> is the type of the values flyweight objects give access to,
 while value lookup is based on associated <code>key_type</code> values.
 <code>key_value</code> must be
-<a href="http://www.sgi.com/tech/stl/Assignable.html"><code>Assignable</code></a>
+<a href="https://boost.org/sgi/stl/Assignable.html"><code>Assignable</code></a>
 and <code>value_type</code> must be constructible from <code>key_type</code>;
 additionally, <code>key_value</code> must
 conform to any extra requirements imposed by the type of factory used.
@@ -444,7 +444,7 @@ explicit flyweight(value_type&amp;&amp; x);</code>
 <blockquote>
 <b>Requires:</b> If <code>flyweight</code> is key-value,
 <code>value_type</code> is
-<a href="http://www.sgi.com/tech/stl/Assignable.html"><code>Assignable</code></a>
+<a href="https://boost.org/sgi/stl/Assignable.html"><code>Assignable</code></a>
 and the
 <a href="key_value.html#key_extractor"><code>Key Extractor</code></a>
 <code>KeyFromValue</code> must have been supplied as part of the
@@ -657,7 +657,7 @@ inline std::basic_ostream&lt;ElemType,Traits&gt;&amp; operator&gt;&gt;(<br>
 <blockquote>
 <b>Requires:</b> If <code>flyweight</code> is key-value,
 <code>value_type</code> is
-<a href="http://www.sgi.com/tech/stl/Assignable.html"><code>Assignable</code></a>
+<a href="https://boost.org/sgi/stl/Assignable.html"><code>Assignable</code></a>
 and the
 <a href="key_value.html#key_extractor"><code>Key Extractor</code></a>
 <code>KeyFromValue</code> must have been supplied as part of the

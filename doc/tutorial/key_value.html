@@ -192,8 +192,8 @@ Many of the requirements imposed on <code>T</code> for
 <a href="basics.html#requirements">regular flyweights</a> move to the key
 type in the case of a key-value <code>flyweight&lt;key_value&lt;K,T&gt; &gt;</code>.
 Now it is <code>K</code> that must be
-<a href="http://www.sgi.com/tech/stl/Assignable.html"><code>Assignable</code></a>,
-<a href="http://www.sgi.com/tech/stl/EqualityComparable.html"><code>Equality
+<a href="https://boost.org/sgi/stl/Assignable.html"><code>Assignable</code></a>,
+<a href="https://boost.org/sgi/stl/EqualityComparable.html"><code>Equality
 Comparable</code></a> and interoperate with
 <a href="../../../functional/hash/index.html">Boost.Hash</a>, where equality and
 hash compatibility are requirements imposed by the default internal factory of
@@ -201,7 +201,7 @@ Boost.Flyweight and can change if this factory is further configured or replaced
 by the user. The only requisite retained on <code>T</code> is that it must be
 constructible from <code>K</code>; only in the case that a flyweight is directly
 assigned a <code>T</code> object is also <code>T</code> required to be
-<a href="http://www.sgi.com/tech/stl/Assignable.html"><code>Assignable</code></a>.
+<a href="https://boost.org/sgi/stl/Assignable.html"><code>Assignable</code></a>.
 To serialize objects of type <code>flyweight&lt;key_value&lt;K,T&gt; &gt;</code>
 only <code>K</code> needs to be serializable.
 </p>
