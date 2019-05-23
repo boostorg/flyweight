@@ -230,11 +230,11 @@ type <code>boost::mpl::_1</code> can be used.
 This specifier, which Boost.Flyweight takes by default, controls the usage of a
 factory internally based in a hash container. Values are determined to be
 equivalent by means of the
-<a href="http://www.sgi.com/tech/stl/BinaryPredicate.html"><code>Binary
+<a href="https://boost.org/sgi/stl/BinaryPredicate.html"><code>Binary
 Predicate</code></a> <code>Pred</code>, and indexed into the factory container
 using <code>Hash</code>, which is assumed to be a <i>hash function</i>, 
 i.e. a
-<a href="http://www.sgi.com/tech/stl/UnaryFunction.html"><code>Unary
+<a href="https://boost.org/sgi/stl/UnaryFunction.html"><code>Unary
 Function</code></a> assigning to each value a hash identifier of
 type <code>std::size_t</code>. The <code>Allocator</code> parameter is
 used by the factory container for its memory allocation needs. The default
@@ -292,7 +292,7 @@ a special hash predicate <code>special_hash</code> and a custom allocator
 <code>set_factory</code> resorts to an <code>std::set</code>-like ordered
 container for the implementation of the flyweight factory.
 <code>Compare</code> must be a
-<a href="http://www.sgi.com/tech/stl/StrictWeakOrdering.html"><code>Strict
+<a href="https://boost.org/sgi/stl/StrictWeakOrdering.html"><code>Strict
 Weak Ordering</code></a> on the value type <code>flyweight</code> is
 acting upon; as is customary with STL ordered containers, two values
 are considered equivalent if none is less than the other according to <code>Pred</code>.
@@ -348,7 +348,7 @@ a container of <code>Entry</code> elements satisfying the following
 requirements:
 <ol>
   <li>The container type must be a model of 
-    <a href="http://www.sgi.com/tech/stl/UniqueAssociativeContainer.html"><code>Unique
+    <a href="https://boost.org/sgi/stl/UniqueAssociativeContainer.html"><code>Unique
     Associative Container</code></a> where equivalence of <code>Entry</code>s
     is determined by the <code>key_type</code> values the entries are convertible
     to	.
@@ -634,9 +634,9 @@ Extending Boost.Flyweight
 
 <br>
 
-<p>Revised November 8th 2008</p>
+<p>Revised April 24th 2019</p>
 
-<p>&copy; Copyright 2006-2008 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
+<p>&copy; Copyright 2006-2019 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
 License, Version 1.0. (See accompanying file <a href="../../../../LICENSE_1_0.txt">
 LICENSE_1_0.txt</a> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">
