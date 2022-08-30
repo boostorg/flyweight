@@ -17,6 +17,7 @@
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
+#include <boost/core/swap.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/flyweight/detail/default_value_policy.hpp>
 #include <boost/flyweight/detail/flyweight_core.hpp>
@@ -37,7 +38,6 @@
 #include <boost/mpl/or.hpp>
 #include <boost/parameter/binding.hpp>
 #include <boost/type_traits/is_same.hpp>
-#include <boost/utility/swap.hpp>
 
 #if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
 #include <boost/utility/enable_if.hpp>
