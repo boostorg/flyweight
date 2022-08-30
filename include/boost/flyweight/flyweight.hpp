@@ -40,7 +40,7 @@
 #include <boost/type_traits/is_same.hpp>
 
 #if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
-#include <boost/utility/enable_if.hpp>
+#include <boost/core/enable_if.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 #include <initializer_list>
 #endif
