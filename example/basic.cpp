@@ -1,6 +1,6 @@
 /* Boost.Flyweight basic example.
  *
- * Copyright 2006-2020 Joaquin M Lopez Munoz.
+ * Copyright 2006-2023 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -92,10 +92,13 @@ std::string full_name(const user_entry& user)
 {
   std::string full;
 
-  /* get() returns the underlying const std::string& */
+  /* get() returns the underlying const std::string&.
+   * Smart-pointer syntax can also be used.
+   */
 
   full.reserve(
-    user.first_name.get().size()+user.last_name.get().size()+1);
+    user.first_name.get().size()+   /* using get() */
+    user.last_name->size()+1);      /* using operator-> */
 
   /* here, on the other hand, implicit conversion is used */
 
