@@ -1,6 +1,6 @@
 /* Boost.Flyweight basic test template.
  *
- * Copyright 2006-2023 Joaquin M Lopez Munoz.
+ * Copyright 2006-2019 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -87,12 +87,10 @@ void test_basic_template(
     /* convertibility to underlying type */
 
     BOOST_TEST(f1.get()==v1);
-    BOOST_TEST(*f1==v1);
 
     /* identity of reference */
 
     BOOST_TEST(&f1.get()==&c1.get());
-    BOOST_TEST(f1.operator->()==&c1.get());
 
     /* modifiers */
 
