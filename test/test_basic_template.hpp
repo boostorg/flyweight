@@ -92,6 +92,7 @@ void test_basic_template(
     /* identity of reference */
 
     BOOST_TEST(&f1.get()==&c1.get());
+    BOOST_TEST(&(*f1)==&c1.get());
     BOOST_TEST(f1.operator->()==&c1.get());
 
     /* modifiers */
