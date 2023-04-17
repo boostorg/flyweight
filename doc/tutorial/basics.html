@@ -128,24 +128,24 @@ unchanged after the redefinition of <code>user_entry</code>:
 
 <p>
 Besides, <code>flyweight&lt;T&gt;</code> is convertible to
-<code>const T&amp;</code>, either implicitly or through the <code>get</code>
-member function:
+<code>const T&amp;</code> implicitly, or explicitly using the <code>get</code>
+member function. Smart-pointer syntax can also be used:
 </p>
 
 <blockquote><pre>
 <span class=identifier>std</span><span class=special>::</span><span class=identifier>string</span> <span class=identifier>full_name</span><span class=special>(</span><span class=keyword>const</span> <span class=identifier>user_entry</span><span class=special>&amp;</span> <span class=identifier>user</span><span class=special>)</span>
 <span class=special>{</span>
-  <span class=identifier>std</span><span class=special>::</span><span class=identifier>string</span> <span class=identifier>full</span><span class=special>;</span>
+<span class=identifier>std</span><span class=special>::</span><span class=identifier>string</span> <span class=identifier>full</span><span class=special>;</span>
 
-  <span class=identifier>full</span><span class=special>.</span><span class=identifier>reserve</span><span class=special>(</span>
-    <span class=identifier>user</span><span class=special>.</span><span class=identifier>first_name</span><span class=special>.</span><span class=identifier>get</span><span class=special>().</span><span class=identifier>size</span><span class=special>()+</span>   <span class=comment>// get() returns the underlying</span>
-    <span class=identifier>user</span><span class=special>.</span><span class=identifier>last_name</span><span class=special>.</span><span class=identifier>get</span><span class=special>().</span><span class=identifier>size</span><span class=special>()+</span><span class=number>1</span><span class=special>);</span> <span class=comment>// const std::string&amp;</span>
+<span class=identifier>full</span><span class=special>.</span><span class=identifier>reserve</span><span class=special>(</span>
+<span class=identifier>user</span><span class=special>.</span><span class=identifier>first_name</span><span class=special>.</span><span class=identifier>get</span><span class=special>().</span><span class=identifier>size</span><span class=special>()+</span> <span class=comment>// get() returns the underlying const std::string&amp;</span>
+<span class=identifier>user</span><span class=special>.</span><span class=identifier>last_name</span><span class=special>-&gt;</span><span class=identifier>size</span><span class=special>()+</span><span class=number>1</span><span class=special>);</span>    <span class=comment>// flyweights also work as pointers to their</span>
+                              <span class=comment>// underlying value</span>
+<span class=identifier>full</span><span class=special>+=</span><span class=identifier>user</span><span class=special>.</span><span class=identifier>first_name</span><span class=special>;</span>        <span class=comment>// implicit conversion is used here</span>
+<span class=identifier>full</span><span class=special>+=</span><span class=string>&quot; &quot;</span><span class=special>;</span>
+<span class=identifier>full</span><span class=special>+=</span><span class=identifier>user</span><span class=special>.</span><span class=identifier>last_name</span><span class=special>;</span>
 
-  <span class=identifier>full</span><span class=special>+=</span><span class=identifier>user</span><span class=special>.</span><span class=identifier>first_name</span><span class=special>;</span>            <span class=comment>// implicit conversion is used here</span>
-  <span class=identifier>full</span><span class=special>+=</span><span class=string>&quot; &quot;</span><span class=special>;</span>
-  <span class=identifier>full</span><span class=special>+=</span><span class=identifier>user</span><span class=special>.</span><span class=identifier>last_name</span><span class=special>;</span>
-
-  <span class=keyword>return</span> <span class=identifier>full</span><span class=special>;</span>
+<span class=keyword>return</span> <span class=identifier>full</span><span class=special>;</span>
 <span class=special>}</span>
 </pre></blockquote>
 
@@ -257,9 +257,9 @@ Key-value flyweights
 
 <br>
 
-<p>Revised April 24th 2019</p>
+<p>Revised March 17th 2023</p>
 
-<p>&copy; Copyright 2006-2019 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
+<p>&copy; Copyright 2006-2023 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
 License, Version 1.0. (See accompanying file <a href="../../../../LICENSE_1_0.txt">
 LICENSE_1_0.txt</a> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">

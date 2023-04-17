@@ -298,7 +298,9 @@ objects constructed from equivalent keys.
 
   <span class=keyword>const</span> <span class=identifier>key_type</span><span class=special>&amp;</span>   <span class=identifier>get_key</span><span class=special>()</span><span class=keyword>const</span><span class=special>;</span>
   <span class=keyword>const</span> <span class=identifier>value_type</span><span class=special>&amp;</span> <span class=identifier>get</span><span class=special>()</span><span class=keyword>const</span><span class=special>;</span>
+  <span class=keyword>const</span> <span class=identifier>value_type</span><span class=special>&amp;</span> <span class=keyword>operator</span><span class=special>*()</span><span class=keyword>const</span><span class=special>;</span>
   <span class=keyword>operator</span> <span class=keyword>const</span>    <span class=identifier>value_type</span><span class=special>&amp;()</span><span class=keyword>const</span><span class=special>;</span>  
+  <span class=keyword>const</span> <span class=identifier>value_type</span><span class=special>*</span> <span class=keyword>operator</span><span class=special>-&gt;()</span><span class=keyword>const</span><span class=special>;</span>
 
   <span class=comment>// modifiers:</span>
 
@@ -499,10 +501,19 @@ if <code>KeyFromValue</code> was not provided, <code>nothrow</code>.
 </blockquote>
 
 <code>const value_type&amp; get()const;<br>
+    const value_type&amp; operator*()const;<br>
 	operator const value_type&amp;()const;</code>
 
 <blockquote>
 <b>Returns:</b> The value associated to the <code>flyweight</code>
+object.<br>
+<b>Exception safety:</b> <code>nothrow</code>.
+</blockquote>
+
+<code>const value_type* operator-&gt;()const</code>
+
+<blockquote>
+<b>Returns:</b> The address of the value associated to the <code>flyweight</code>
 object.<br>
 <b>Exception safety:</b> <code>nothrow</code>.
 </blockquote>
@@ -784,9 +795,9 @@ Key-value flyweights
 
 <br>
 
-<p>Revised March 15th 2020</p>
+<p>Revised March 17th 2023</p>
 
-<p>&copy; Copyright 2006-2020 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
+<p>&copy; Copyright 2006-2023 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
 License, Version 1.0. (See accompanying file <a href="../../../../LICENSE_1_0.txt">
 LICENSE_1_0.txt</a> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">
