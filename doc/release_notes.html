@@ -56,6 +56,10 @@ Acknowledgements
 <ul>
   <li>Added smart-pointer syntax to <code>boost::flyweight</code> (<code>operator*</code>
     and <code>operator-&gt;</code> dereferencing to the underlying value).</li>
+  <li>Fixed a situation where the mutex used by
+    <a href="reference/locking.html#simple_locking_synopsis"><code>simple_locking</code></a>
+    was not recursive
+    (<a href="https://github.com/boostorg/flyweight/issues/12">issue #12</a>).</li>
 </ul>
 </p>
 
@@ -238,7 +242,7 @@ Acknowledgements
 
 <br>
 
-<p>Revised March 17th 2023</p>
+<p>Revised June 30th 2023</p>
 
 <p>&copy; Copyright 2006-2023 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
