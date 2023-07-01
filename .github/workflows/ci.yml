@@ -137,13 +137,20 @@ jobs:
             os: macos-12
 
     runs-on: ${{matrix.os}}
+    container: ${{matrix.container}}
 
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup container environment
+        if: matrix.container
+        run: |
+          apt-get update
+          apt-get -y install sudo python git g++
+          
       - name: Install packages
         if: matrix.install
-        run: sudo apt install ${{matrix.install}}
+        run: sudo apt-get -y install ${{matrix.install}}
 
       - name: Setup Boost
         run: |
