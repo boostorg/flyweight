@@ -9,7 +9,7 @@
 
 project
     : requirements
-      <os>LINUX:<threading>multi
+      <target-os>linux:<threading>multi
     ;
 
 test-suite "flyweight" :
