@@ -9,6 +9,7 @@
 
 project
     : requirements
+      <library>/boost/flyweight//boost_flyweight
       <target-os>linux:<threading>multi
     ;
 
