@@ -1,4 +1,4 @@
-/* Copyright 2006-2020 Joaquin M Lopez Munoz.
+/* Copyright 2006-2024 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -18,6 +18,7 @@
 #include <boost/detail/workaround.hpp>
 #include <boost/flyweight/detail/perfect_fwd.hpp>
 #include <boost/mpl/apply.hpp>
+#include <boost/type_traits/declval.hpp>
 
 #if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
 #pragma warning(push)
@@ -149,6 +150,8 @@ public:
   }
 
   static const key_type& key(const handle_type& h)
+  BOOST_NOEXCEPT_IF(noexcept(
+    static_cast<const rep_type&>(boost::declval<const entry_type&>())))
   {
     return static_cast<const rep_type&>(entry(h));
   }

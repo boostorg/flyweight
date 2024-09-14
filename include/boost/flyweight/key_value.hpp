@@ -1,4 +1,4 @@
-/* Copyright 2006-2018 Joaquin M Lopez Munoz.
+/* Copyright 2006-2024 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -21,6 +21,7 @@
 #include <boost/mpl/assert.hpp>
 #include <boost/type_traits/aligned_storage.hpp>
 #include <boost/type_traits/alignment_of.hpp> 
+#include <boost/type_traits/declval.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <new>
 
@@ -91,6 +92,8 @@ struct optimized_key_value:value_marker
     }
 
     operator const key_type&()const
+    BOOST_NOEXCEPT_IF(noexcept(
+      boost::declval<KeyFromValue>()(boost::declval<const value_type&>())))
     {
       if(value_ptr)return key_from_value(*value_ptr);
       else         return *key_ptr();
@@ -227,7 +230,7 @@ struct regular_key_value:value_marker
       if(value_ptr)value_ptr->~value_type();
     }
 
-    operator const key_type&()const{return key;}
+    operator const key_type&()const BOOST_NOEXCEPT{return key;}
 
     operator const value_type&()const
     {
