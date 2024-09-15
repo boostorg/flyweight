@@ -256,7 +256,8 @@ public:
     
   friend bool operator==(const flyweight& x,const flyweight& y)BOOST_NOEXCEPT
   {
-    return &x.get()==&y.get();
+    return 
+      boost::addressof(core::value(x.h))==boost::addressof(core::value(y.h));
   }
 
   friend bool operator!=(const flyweight& x,const flyweight& y)BOOST_NOEXCEPT
