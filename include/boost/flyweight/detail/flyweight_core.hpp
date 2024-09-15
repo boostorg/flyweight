@@ -139,12 +139,12 @@ public:
   static handle_type insert(value_type&& x){return insert_value(std::move(x));}
 #endif
 
-  static const entry_type& entry(const base_handle_type& h)
+  static const entry_type& entry(const base_handle_type& h)BOOST_NOEXCEPT
   {
     return factory().entry(h);
   }
 
-  static const value_type& value(const handle_type& h)
+  static const value_type& value(const handle_type& h)BOOST_NOEXCEPT
   {
     return static_cast<const rep_type&>(entry(h));
   }
@@ -156,12 +156,12 @@ public:
     return static_cast<const rep_type&>(entry(h));
   }
 
-  static factory_type& factory()
+  static factory_type& factory()BOOST_NOEXCEPT
   {
     return *static_factory_ptr;
   }
 
-  static mutex_type& mutex()
+  static mutex_type& mutex()BOOST_NOEXCEPT
   {
     return *static_mutex_ptr;
   }
