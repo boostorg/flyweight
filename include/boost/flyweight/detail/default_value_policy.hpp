@@ -1,4 +1,4 @@
-/* Copyright 2006-2019 Joaquin M Lopez Munoz.
+/* Copyright 2006-2024 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -62,7 +62,7 @@ struct default_value_policy:value_marker
     rep_type(rep_type&& r):x(std::move(r.x)){}
 #endif
 
-    operator const value_type&()const{return x;}
+    operator const value_type&()const BOOST_NOEXCEPT{return x;}
 
     value_type x;
   };
