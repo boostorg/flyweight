@@ -246,7 +246,7 @@ public:
     return core::key(h);
   }
 
-  const value_type& get()const BOOST_NOEXCEPT{return core::value(h);}
+  const value_type& get()const{return core::value(h);}
   const value_type& operator*()const BOOST_NOEXCEPT{return get();}
   operator const    value_type&()const BOOST_NOEXCEPT{return get();}
   const value_type* operator->()const BOOST_NOEXCEPT
