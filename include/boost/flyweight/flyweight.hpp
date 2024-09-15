@@ -246,7 +246,7 @@ public:
     return core::key(h);
   }
 
-  const value_type& get()const{return core::value(h);}
+  const value_type& get()const BOOST_NOEXCEPT{return core::value(h);}
   const value_type& operator*()const BOOST_NOEXCEPT{return get();}
   operator const    value_type&()const BOOST_NOEXCEPT{return get();}
   const value_type* operator->()const BOOST_NOEXCEPT
@@ -256,7 +256,7 @@ public:
     
   friend bool operator==(const flyweight& x,const flyweight& y)BOOST_NOEXCEPT
   {
-    return boost::addressof(x.get())==boost::addressof(y.get());
+    return &x.get()==&y.get();
   }
 
   friend bool operator!=(const flyweight& x,const flyweight& y)BOOST_NOEXCEPT
