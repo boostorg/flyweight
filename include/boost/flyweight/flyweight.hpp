@@ -256,8 +256,16 @@ public:
     
   friend bool operator==(const flyweight& x,const flyweight& y)BOOST_NOEXCEPT
   {
+#if BOOST_WORKAROUND(BOOST_MSVC,<1930)
+    /* msvc 14.0 has spurious codegen bugs seemingly related to flyweight::get
+     * being noexcept.
+     */
+
     return 
       boost::addressof(core::value(x.h))==boost::addressof(core::value(y.h));
+#else
+    return boost::addressof(x.get())==boost::addressof(y.get());
+#endif
   }
 
   friend bool operator!=(const flyweight& x,const flyweight& y)BOOST_NOEXCEPT
