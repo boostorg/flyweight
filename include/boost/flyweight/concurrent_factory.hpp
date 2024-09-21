@@ -68,7 +68,7 @@ public:
 
 private:
   template<typename,typename,typename,typename,typename>
-  friend class concurrent_factory_class;
+  friend class ::boost::flyweights::concurrent_factory_class;
 
   refcounted_handle(const RefcountedEntry* p_):p{p_}
   {
