@@ -33,6 +33,16 @@ struct concurrent_factory_flyweight_specifier1
   };
 };
 
+#if BOOST_WORKAROUND(BOOST_MSVC,<1930)
+  /* Boost.MPL spuriously and failingly instantiates std::hash<boost::mpl::_n>
+   * in msvc 14.0 under some circumstances.
+   */
+
+#define STD_HASH boost::hash
+#else
+#define STD_HASH std::hash
+#endif
+
 struct concurrent_factory_flyweight_specifier2
 {
   template<typename T>
@@ -45,7 +55,7 @@ struct concurrent_factory_flyweight_specifier2
       no_tracking,
       concurrent_factory_class<
         boost::mpl::_1,boost::mpl::_2,
-        std::hash<boost::mpl::_2>,
+        STD_HASH<boost::mpl::_2>,
         std::equal_to<boost::mpl::_2>,
         std::allocator<boost::mpl::_1>
       >
@@ -61,17 +71,7 @@ struct concurrent_factory_flyweight_specifier3
     typedef flyweight<
       T,
       concurrent_factory<
-
-#if BOOST_WORKAROUND(BOOST_MSVC,<1930)
-      /* std::hash<boost::mpl::_2> is spuriously and failingly instantiated
-       * by Boost.MPL in msvc 14.0.
-       */
-
-        boost::hash<boost::mpl::_2>,
-#else
-        std::hash<boost::mpl::_2>,
-#endif
-
+        STD_HASH<boost::mpl::_2>,
         std::equal_to<boost::mpl::_2>,
         std::allocator<boost::mpl::_1>
       >,
