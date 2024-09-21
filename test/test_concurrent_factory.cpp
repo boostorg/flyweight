@@ -11,6 +11,7 @@
 #include "test_concurrent_factory.hpp"
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
+#include <boost/detail/workaround.hpp>
 #include <boost/flyweight/flyweight.hpp>
 #include <boost/flyweight/concurrent_factory.hpp> 
 #include <boost/flyweight/no_locking.hpp>
@@ -60,7 +61,17 @@ struct concurrent_factory_flyweight_specifier3
     typedef flyweight<
       T,
       concurrent_factory<
+
+#if BOOST_WORKAROUND(BOOST_MSVC,<1930)
+      /* std::hash<boost::mpl::_2> is spuriously and failingly instantiated
+       * by Boost.MPL in msvc 14.0.
+       */
+
+        boost::hash<boost::mpl::_2>,
+#else
         std::hash<boost::mpl::_2>,
+#endif
+
         std::equal_to<boost::mpl::_2>,
         std::allocator<boost::mpl::_1>
       >,
