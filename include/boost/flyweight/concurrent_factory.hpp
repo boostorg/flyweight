@@ -111,8 +111,6 @@ class concurrent_factory_class:public factory_marker
     boost::allocator_rebind_t<unrebound_allocator_type,entry_type>
   >;
 
-  static constexpr auto gc_time=std::chrono::seconds(1);
-
 public:
   using handle_type=concurrent_factory_detail::refcounted_handle<entry_type>;
   
@@ -120,6 +118,8 @@ public:
     /* Garbage collector. Traverses the container every gc_time and lockedly
      * erases entries without any external reference.
      */
+
+    constexpr auto gc_time=std::chrono::seconds(1);
 
     for(;;){
       {
