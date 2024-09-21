@@ -20,13 +20,13 @@
 #include <boost/core/invoke_swap.hpp>
 #include <boost/flyweight/concurrent_factory_fwd.hpp>
 #include <boost/flyweight/factory_tag.hpp>
-#include <boost/mpl/aux_/lambda_support.hpp>
-#include <boost/mpl/if.hpp>
+#include <boost/flyweight/detail/is_placeholder_expr.hpp>
 #include <boost/unordered/concurrent_node_set.hpp>
 #include <chrono>
 #include <condition_variable>
 #include <mutex>
 #include <thread>
+#include <type_traits>
 #include <utility>
 
 /* flyweight factory based on boost::concurent_node_set */
@@ -68,12 +68,12 @@ public:
 
 private:
   template<typename,typename,typename,typename,typename>
-  friend class ::boost::flyweights::concurrent_factory_class;
+  friend class concurrent_factory_class_impl;
 
   refcounted_handle(const RefcountedEntry* p_):p{p_}
   {
     /* Doesn't add ref, refcount already incremented by
-     * concurrent_factory_class before calling this ctor.
+     * concurrent_factory_class_impl before calling this ctor.
      */
     BOOST_ASSERT(p!=nullptr);
     BOOST_ASSERT(p->count()>0);
@@ -82,29 +82,27 @@ private:
   const RefcountedEntry* p;
 };
 
-} /* namespace concurrent_factory_detail */
-
 template<
   typename Entry,typename Key,
   typename Hash,typename Pred,typename Allocator
 >
-class concurrent_factory_class:public factory_marker
+class concurrent_factory_class_impl:public factory_marker
 {
-  using entry_type=concurrent_factory_detail::refcounted_entry<Entry>;
-  using unrebound_allocator_type=typename boost::mpl::if_<
-    mpl::is_na<Allocator>,
+  using entry_type=refcounted_entry<Entry>;
+  using unrebound_allocator_type=typename std::conditional<
+    mpl::is_na<Allocator>::value,
     std::allocator<entry_type>,
     Allocator
   >::type;
   using container_type=boost::concurrent_node_set<
     entry_type,
-    typename boost::mpl::if_<
-      mpl::is_na<Hash>,
+    typename std::conditional<
+      mpl::is_na<Hash>::value,
       boost::hash<Key>,
       Hash
     >::type,
-    typename boost::mpl::if_<
-      mpl::is_na<Pred>,
+    typename std::conditional<
+      mpl::is_na<Pred>::value,
       std::equal_to<Key>,
       Pred
     >::type,
@@ -112,9 +110,9 @@ class concurrent_factory_class:public factory_marker
   >;
 
 public:
-  using handle_type=concurrent_factory_detail::refcounted_handle<entry_type>;
+  using handle_type=refcounted_handle<entry_type>;
   
-  concurrent_factory_class():gc{[this]{
+  concurrent_factory_class_impl():gc{[this]{
     /* Garbage collector. Traverses the container every gc_time and lockedly
      * erases entries without any external reference.
      */
@@ -131,7 +129,7 @@ public:
   }}
   {}
 
-  ~concurrent_factory_class()
+  ~concurrent_factory_class_impl()
   {
     /* shut the garbage collector down */
 
@@ -168,12 +166,40 @@ private:
   std::condition_variable cv;
   bool                    stop=false;
   std::thread             gc;
-
-public:
-  typedef concurrent_factory_class type;
-  BOOST_MPL_AUX_LAMBDA_SUPPORT(
-    5,concurrent_factory_class,(Entry,Key,Hash,Pred,Allocator))
 };
+
+struct concurrent_factory_class_empty_base:factory_marker{};
+
+template<
+  typename Entry,typename Key,
+  typename Hash,typename Pred,typename Allocator
+>
+struct check_concurrent_factory_class_params{};
+
+} /* namespace concurrent_factory_detail */
+
+template<
+  typename Entry,typename Key,
+  typename Hash,typename Pred,typename Allocator
+>
+class concurrent_factory_class:
+  /* boost::mpl::apply may instantiate concurrent_factory_class<...> even when
+   * the type is a lambda expression, so we need to guard against the
+   * implementation defining nonsensical typedefs based on placeholder params.
+   */
+
+  public std::conditional<
+    boost::flyweights::detail::is_placeholder_expression<
+      concurrent_factory_detail::check_concurrent_factory_class_params<
+        Entry,Key,Hash,Pred,Allocator
+      >
+    >::value,
+    concurrent_factory_detail::concurrent_factory_class_empty_base,
+    concurrent_factory_detail::concurrent_factory_class_impl<
+      Entry,Key,Hash,Pred,Allocator
+    >
+  >::type
+{};
 
 /* concurrent_factory_class specifier */
 
