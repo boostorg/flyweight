@@ -41,7 +41,8 @@ template<typename Entry>
 struct refcounted_entry:Entry
 {
   explicit refcounted_entry(Entry&& x):Entry{std::move(x)}{}
-  refcounted_entry(refcounted_entry&& x):Entry{std::move(x)}{}
+  refcounted_entry(refcounted_entry&& x):
+    Entry{std::move(static_cast<Entry&>(x))}{}
 
   long count()const{return ref;}
   void add_ref()const{++ref;}
@@ -141,15 +142,23 @@ public:
     gc.join();
   }
 
-  handle_type insert(Entry&& x)
+  /* Instead of insert, concurrent_factory provides the undocumented extension
+   * insert_and_visit, accessible through ADL (see global insert_and_visit
+   * below). This ensures that visitation happens in a locked environment
+   * even if no external locking is specified.
+   */
+
+  template<typename F>
+  handle_type insert_and_visit(Entry&& x,F f)
   {
     const entry_type* p=nullptr;
-    auto              f=[&p](const entry_type& x){
+    auto              g=[&p,&f](const entry_type& x){
+      f(static_cast<const Entry&>(x));
       x.add_ref();
       p=std::addressof(x);
     };
 
-    cont.insert_and_cvisit(entry_type{std::move(x)},f,f);
+    cont.insert_and_visit(entry_type{std::move(x)},g,g);
     return {p};
   }
 
@@ -200,6 +209,18 @@ class concurrent_factory_class:
     >
   >::type
 {};
+
+template<
+  typename Entry,typename Key,
+  typename Hash,typename Pred,typename Allocator,
+  typename F
+>
+typename concurrent_factory_class<Entry,Key,Hash,Pred,Allocator>::handle_type
+insert_and_visit(
+  concurrent_factory_class<Entry,Key,Hash,Pred,Allocator>& fac,Entry&& x,F f)
+{
+  return fac.insert_and_visit(std::move(x),f);
+}
 
 /* concurrent_factory_class specifier */
 

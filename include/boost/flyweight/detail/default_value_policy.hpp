@@ -67,11 +67,11 @@ struct default_value_policy:value_marker
     value_type x;
   };
 
-  static void construct_value(const rep_type&){}
-  static void copy_value(const rep_type&){}
+  static void key_construct_value(const rep_type&){}
+  static void copy_construct_value(const rep_type&,const value_type&){}
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-  static void move_value(const rep_type&){}
+  static void move_construct_value(const rep_type&,value_type&&){}
 #endif
 };
 
