@@ -8,7 +8,7 @@
  * See http://www.boost.org/libs/flyweight for library home page.
  */
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include "test_concurrent_factory.hpp"
 
 int main()
