@@ -17,9 +17,9 @@
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
+#include <boost/config/workaround.hpp>
 #include <boost/core/addressof.hpp>
 #include <boost/core/invoke_swap.hpp>
-#include <boost/detail/workaround.hpp>
 #include <boost/flyweight/detail/default_value_policy.hpp>
 #include <boost/flyweight/detail/flyweight_core.hpp>
 #include <boost/flyweight/detail/perfect_fwd.hpp>

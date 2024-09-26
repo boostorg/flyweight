@@ -16,7 +16,7 @@
 #endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/flyweight/key_value.hpp>
 #include <boost/mpl/apply.hpp>
 #include <boost/utility/value_init.hpp>

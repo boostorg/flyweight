@@ -11,7 +11,7 @@
 #include "test_concurrent_factory.hpp"
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/detail/workaround.hpp>
+#include <boost/config/workaround.hpp>
 #include <boost/flyweight/flyweight.hpp>
 #include <boost/flyweight/concurrent_factory.hpp> 
 #include <boost/flyweight/no_locking.hpp>

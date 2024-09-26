@@ -14,8 +14,8 @@
 #endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
+#include <boost/config/workaround.hpp>
 #include <boost/detail/templated_streams.hpp>
-#include <boost/detail/workaround.hpp>
 #include <boost/parameter/parameters.hpp>
 #include <boost/preprocessor/punctuation/comma.hpp>
 #include <iosfwd>

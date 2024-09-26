@@ -1,6 +1,6 @@
 /* Boost.Flyweight test suite.
  *
- * Copyright 2006-2014 Joaquin M Lopez Munoz.
+ * Copyright 2006-2024 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -9,7 +9,7 @@
  */
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include "test_assoc_cont_factory.hpp"
 #include "test_basic.hpp"
 #include "test_concurrent_factory.hpp"
