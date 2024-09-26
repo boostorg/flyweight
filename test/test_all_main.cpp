@@ -12,6 +12,7 @@
 #include <boost/detail/lightweight_test.hpp>
 #include "test_assoc_cont_factory.hpp"
 #include "test_basic.hpp"
+#include "test_concurrent_factory.hpp"
 #include "test_custom_factory.hpp"
 #include "test_intermod_holder.hpp"
 #include "test_init.hpp"
@@ -25,6 +26,7 @@ int main()
 {
   test_assoc_container_factory();
   test_basic();
+  test_concurrent_factory();
   test_custom_factory();
   test_init();
   test_intermodule_holder();

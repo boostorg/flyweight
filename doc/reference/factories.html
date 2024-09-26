@@ -49,6 +49,16 @@ Holders
       <li><a href="#hashed_factory">Class template <code>hashed_factory</code></a></li>
     </ul>    
   </li>
+  <li><a href="#concurrent_factory_fwd_synopsis">Header
+    <code>"boost/flyweight/concurrent_factory_fwd.hpp"</code> synopsis</a>
+  </li>
+  <li><a href="#concurrent_factory_synopsis">Header
+    <code>"boost/flyweight/concurrent_factory.hpp"</code> synopsis</a>
+    <ul>
+      <li><a href="#concurrent_factory_class">Class template <code>concurrent_factory_class</code></a></li>
+      <li><a href="#concurrent_factory">Class template <code>concurrent_factory</code></a></li>
+    </ul>    
+  </li>
   <li><a href="#set_factory_fwd_synopsis">Header
     <code>"boost/flyweight/set_factory_fwd.hpp"</code> synopsis</a>
   </li>
@@ -338,6 +348,142 @@ Placeholder Expressions</code></a> resolving to the actual types used by
 <code>hashed_factory_class</code>.
 </p>
 
+<h2><a name="concurrent_factory_fwd_synopsis">Header
+<a href="../../../../boost/flyweight/concurrent_factory_fwd.hpp"><code>"boost/flyweight/concurrent_factory_fwd.hpp"</code></a> synopsis</a></h2>
+
+<blockquote><pre>
+<span class=keyword>namespace</span> <span class=identifier>boost</span><span class=special>{</span>
+
+<span class=keyword>namespace</span> <span class=identifier>flyweights</span><span class=special>{</span>
+
+<span class=keyword>template</span><span class=special>&lt;</span>
+  <span class=keyword>typename</span> <span class=identifier>Entry</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Key</span><span class=special>,</span>
+  <span class=keyword>typename</span> <span class=identifier>Hash</span><span class=special>=</span><b>implementation defined</b><span class=special>,</span>
+  <span class=keyword>typename</span> <span class=identifier>Pred</span><span class=special>=</span><b>implementation defined</b><span class=special>,</span>
+  <span class=keyword>typename</span> <span class=identifier>Allocator</span><span class=special>=</span><b>implementation defined</b>
+<span class=special>&gt;</span>
+<span class=keyword>class</span> <span class=identifier>concurrent_factory_class</span><span class=special>;</span>
+
+<span class=keyword>template</span><span class=special>&lt;</span>
+  <span class=keyword>typename</span> <span class=identifier>Hash</span><span class=special>=</span><b>implementation defined</b><span class=special>,</span>
+  <span class=keyword>typename</span> <span class=identifier>Pred</span><span class=special>=</span><b>implementation defined</b><span class=special>,</span>
+  <span class=keyword>typename</span> <span class=identifier>Allocator</span><span class=special>=</span><b>implementation defined</b>
+<span class=special>&gt;</span>
+<span class=keyword>struct</span> <span class=identifier>concurrent_factory</span><span class=special>;</span>
+
+<span class=special>}</span> <span class=comment>// namespace boost::flyweights</span>
+
+<span class=special>}</span> <span class=comment>// namespace boost</span>
+</pre></blockquote>
+
+<p>
+<code>concurrent_factory_fwd.hpp</code> forward declares the class templates
+<a href="#concurrent_factory_class"><code>concurrent_factory_class</code></a>
+and <a href="#concurrent_factory"><code>concurrent_factory</code></a>.
+</p>
+
+<h2><a name="concurrent_factory_synopsis">Header
+<a href="../../../../boost/flyweight/concurrent_factory.hpp"><code>"boost/flyweight/concurrent_factory.hpp"</code></a> synopsis</a></h2>
+
+<h3><a name="concurrent_factory_class">Class template <code>concurrent_factory_class</code></a></h3>
+
+<p>
+<code>concurrent_factory_class</code> is a <a href="#factory"><code>Factory</code></a>
+implemented with a concurrent hash container. This factory does not require external
+locking, even in a multithreaded scenarios. It does not require any tracking mechanism
+either: values no longer referenced by any flyweight are not erased deterministically,
+but rather they are removed periodically by an internal garbage collector running
+in a dedicated thread.
+</p>
+
+<blockquote><pre>
+<span class=keyword>template</span><span class=special>&lt;</span>
+  <span class=keyword>typename</span> <span class=identifier>Entry</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Key</span><span class=special>,</span>
+  <span class=keyword>typename</span> <span class=identifier>Hash</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Pred</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Allocator</span>
+<span class=special>&gt;</span>
+<span class=keyword>class</span> <span class=identifier>concurrent_factory_class</span>
+<span class=special>{</span>
+<span class=keyword>public</span><span class=special>:</span>
+  <span class=keyword>typedef</span> <b>implementation defined</b> <span class=identifier>handle_type</span><span class=special>;</span>
+  
+  <span class=identifier>handle_type</span>  <span class=identifier>insert</span><span class=special>(</span><span class=keyword>const</span> <span class=identifier>Entry</span><span class=special>&amp;</span> <span class=identifier>x</span><span class=special>);</span>
+  <span class=keyword>void</span>         <span class=identifier>erase</span><span class=special>(</span><span class=identifier>handle_type</span> <span class=identifier>h</span><span class=special>);</span>
+  <span class=keyword>const</span> <span class=identifier>Entry</span><span class=special>&amp;</span> <span class=identifier>entry</span><span class=special>(</span><span class=identifier>handle_type</span> <span class=identifier>h</span><span class=special>);</span>
+<span class=special>};</span>
+</pre></blockquote>
+
+<p>
+<code>Hash</code> is a
+<a href="https://boost.org/sgi/stl/DefaultConstructible.html"><code>Default
+Constructible</code></a>
+<a href="https://boost.org/sgi/stl/UnaryFunction.html"><code>Unary Function</code></a>
+taking a single argument of type <code>Key</code> and returning a
+value of type <code>std::size_t</code> in the range
+<code>[0, std::numeric_limits&lt;std::size_t&gt;::max())</code>.
+<code>Pred</code> is a
+<a href="https://boost.org/sgi/stl/DefaultConstructible.html"><code>Default
+Constructible</code></a> 
+<a href="https://boost.org/sgi/stl/BinaryPredicate.html">
+<code>Binary Predicate</code></a> inducing an equivalence relation
+on elements of <code>Key</code>. It is required that
+a <code>Hash</code> object return the same value for objects
+equivalent under <code>Pred</code>.
+The equivalence relation on <code>Key</code> associated to the factory is
+that induced by <code>Pred</code>.
+The default arguments for <code>Hash</code> and <code>Pred</code> are
+<a href="../../../functional/hash/index.html"><code>boost::hash&lt;Key&gt;</code></a>
+and <code>std::equal_to&lt;Key&gt;</code>, respectively. 
+<code>Allocator</code> must be an allocator of <code>Entry</code> objects
+satisfying the associated C++ requirements at <b>[lib.allocator.requirements]</b>. 
+The default argument is <code>std::allocator&lt;Entry&gt;</code>. The internal
+concurrent container upon which <code>concurrent_factory_class</code> is based is
+constructed with default initialized objects of type <code>Hash</code>,
+<code>Pred</code> and <code>Allocator</code>.
+</p>
+
+<h3><a name="concurrent_factory">Class template <code>concurrent_factory</code></a></h3>
+
+<p>
+<a href="#factory"><code>Factory Specifier</code></a> for <a href="#concurrent_factory_class"><code>concurrent_factory_class</code></a>.
+</p>
+
+<blockquote><pre>
+<span class=keyword>template</span><span class=special>&lt;</span><span class=keyword>typename</span> <span class=identifier>Hash</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Pred</span><span class=special>,</span><span class=keyword>typename</span> <span class=identifier>Allocator</span><span class=special>&gt;</span>
+<span class=keyword>struct</span> <span class=identifier>concurrent_factory</span><span class=special>;</span>
+</pre></blockquote>
+
+<p>
+<code>concurrent_factory&lt;Hash,Pred,Allocator&gt;</code> is an
+<a href="../../../mpl/doc/refmanual/metafunction-class.html"><code>MPL Metafunction
+Class</code></a> such that the type
+</p>
+
+<blockquote><pre>
+<span class=identifier>boost</span><span class=special>::</span><span class=identifier>mpl</span><span class=special>::</span><span class=identifier>apply</span><span class=special>&lt;</span>
+  <span class=identifier>concurrent_factory</span><span class=special>&lt;</span><span class=identifier>Hash</span><span class=special>,</span><span class=identifier>Pred</span><span class=special>,</span><span class=identifier>Allocator</span><span class=special>&gt;,</span>
+  <span class=identifier>Entry</span><span class=special>,</span><span class=identifier>Key</span>
+<span class=special>&gt;::</span><span class=identifier>type</span>
+</pre></blockquote>
+
+<p>
+is the same as
+</p>
+
+<blockquote><pre>
+<span class=identifier>boost</span><span class=special>::</span><span class=identifier>mpl</span><span class=special>::</span><span class=identifier>apply</span><span class=special>&lt;</span>
+  <span class=identifier>concurrent_factory_class</span><span class=special>&lt;</span><span class=identifier>boost</span><span class=special>::</span><span class=identifier>mpl</span><span class=special>::</span><span class=identifier>_1</span><span class=special>,</span><span class=identifier>boost</span><span class=special>::</span><span class=identifier>mpl</span><span class=special>::</span><span class=identifier>_2</span><span class=special>,</span><span class=identifier>Hash</span><span class=special>,</span><span class=identifier>Pred</span><span class=special>,</span><span class=identifier>Allocator</span><span class=special>&gt;,</span>
+  <span class=identifier>Entry</span><span class=special>,</span><span class=identifier>Key</span>
+<span class=special>&gt;::</span><span class=identifier>type</span>
+</pre></blockquote>
+
+<p>
+This implies that <code>Hash</code>, <code>Pred</code> and <code>Allocator</code>
+can be 
+<a href="../../../mpl/doc/refmanual/placeholder-expression.html"><code>MPL
+Placeholder Expressions</code></a> resolving to the actual types used by
+<code>concurrent_factory_class</code>.
+</p>
+
 <h2><a name="set_factory_fwd_synopsis">Header
 <a href="../../../../boost/flyweight/set_factory_fwd.hpp"><code>"boost/flyweight/set_factory_fwd.hpp"</code></a> synopsis</a></h2>
 
@@ -570,9 +716,9 @@ Holders
 
 <br>
 
-<p>Revised April 24th 2019</p>
+<p>Revised September 20th 2024</p>
 
-<p>&copy; Copyright 2006-2019 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
+<p>&copy; Copyright 2006-2024 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
 License, Version 1.0. (See accompanying file <a href="../../../../LICENSE_1_0.txt">
 LICENSE_1_0.txt</a> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">
