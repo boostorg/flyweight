@@ -231,13 +231,12 @@ type <code>boost::mpl::_1</code> can be used.
 This specifier, which Boost.Flyweight takes by default, controls the usage of a
 factory internally based on a hash container. Values are determined to be
 equivalent by means of the
-<a href="https://boost.org/sgi/stl/BinaryPredicate.html"><code>Binary
-Predicate</code></a> <code>Pred</code>, and indexed into the factory container
-using <code>Hash</code>, which is assumed to be a <i>hash function</i>, 
-i.e. a
-<a href="https://boost.org/sgi/stl/UnaryFunction.html"><code>Unary
-Function</code></a> assigning to each value a hash identifier of
-type <code>std::size_t</code>. The <code>Allocator</code> parameter is
+<a href="https://en.cppreference.com/w/cpp/named_req/BinaryPredicate"><code>BinaryPredicate</code></a>
+<code>Pred</code>, and indexed into the factory container
+using <code>Hash</code>, which is assumed to be a
+<a href="https://en.cppreference.com/w/cpp/named_req/Hash"><code>Hash</code></a>
+function object for arguments of type <code>Key</code>.
+The <code>Allocator</code> parameter is
 used by the factory container for its memory allocation needs. The default
 types for these parameters are such that the expression
 </p>
@@ -352,8 +351,8 @@ with the same meaning as in <a href="#hashed_factory"><code>hashed_factory</code
 <code>set_factory</code> resorts to an <code>std::set</code>-like ordered
 container for the implementation of the flyweight factory.
 <code>Compare</code> must be a
-<a href="https://boost.org/sgi/stl/StrictWeakOrdering.html"><code>Strict
-Weak Ordering</code></a> on the value type <code>flyweight</code> is
+<a href="https://en.cppreference.com/w/cpp/named_req/BinaryPredicate"><code>BinaryPredicate</code></a>
+inducing a strict weak ordering on the value type <code>flyweight</code> is
 acting upon; as is customary with STL ordered containers, two values
 are considered equivalent if none is less than the other according to <code>Pred</code>.
 <code>Allocator</code> is an allocator type passed along to the factory
@@ -408,8 +407,10 @@ a container of <code>Entry</code> elements satisfying the following
 requirements:
 <ol>
   <li>The container type must be a model of 
-    <a href="https://boost.org/sgi/stl/UniqueAssociativeContainer.html"><code>Unique
-    Associative Container</code></a> where equivalence of <code>Entry</code>s
+    <a href="https://en.cppreference.com/w/cpp/named_req/AssociativeContainer"><code>AssociativeContainer</code></a>
+    or
+    <a href="https://en.cppreference.com/w/cpp/named_req/UnorderedAssociativeContainer"><code>UnorderedAssociativeContainer</code></a>
+    with unique keys, where equivalence of <code>Entry</code>s
     is determined by the <code>key_type</code> values the entries are convertible
     to.
   </li>
@@ -694,7 +695,7 @@ Extending Boost.Flyweight
 
 <br>
 
-<p>Revised September 18th 2024</p>
+<p>Revised September 27th 2024</p>
 
 <p>&copy; Copyright 2006-2024 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 

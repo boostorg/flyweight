@@ -324,7 +324,7 @@ of <code>flyweight</code> is a <i>key-value</i> flyweight.
 <code>value_type</code> is the type of the values flyweight objects give access to,
 while value lookup is based on associated <code>key_type</code> values.
 <code>key_value</code> must be
-<a href="https://boost.org/sgi/stl/Assignable.html"><code>Assignable</code></a>
+<a href="https://en.cppreference.com/w/cpp/named_req/MoveConstructible"><code>MoveConstructible</code></a>
 and <code>value_type</code> must be constructible from <code>key_type</code>;
 additionally, <code>key_value</code> must
 conform to any extra requirements imposed by the type of factory used.
@@ -443,10 +443,9 @@ explicit flyweight(const value_type&amp;&amp; x);<br>
 explicit flyweight(value_type&amp;&amp; x);</code>
 
 <blockquote>
-<b>Requires:</b> If <code>flyweight</code> is key-value,
-<code>value_type</code> is
-<a href="https://boost.org/sgi/stl/Assignable.html"><code>Assignable</code></a>
-and the
+<b>Requires:</b>
+<code>value_type</code> is constructible from the type of the argument.
+If <code>flyweight</code> is key-value, the
 <a href="key_value.html#key_extractor"><code>Key Extractor</code></a>
 <code>KeyFromValue</code> must have been supplied as part of the
 <code>key_value&lt;&gt;</code> construct.<br>
@@ -666,7 +665,7 @@ inline std::basic_istream&lt;ElemType,Traits&gt;&amp; operator&gt;&gt;(<br>
 <blockquote>
 <b>Requires:</b> If <code>flyweight</code> is key-value,
 <code>value_type</code> is
-<a href="https://boost.org/sgi/stl/Assignable.html"><code>Assignable</code></a>
+<a href="https://en.cppreference.com/w/cpp/named_req/CopyConstructible"><code>CopyConstructible</code></a>
 and the
 <a href="key_value.html#key_extractor"><code>Key Extractor</code></a>
 <code>KeyFromValue</code> must have been supplied as part of the
@@ -680,7 +679,7 @@ and assigns it to <code>x</code>.<br>
 
 <p>
 Support is provided for hashing <code>flyweight</code>s both with <code>std::hash</code> and
-<a href="../../../../doc/html/hash.html"><code>boost::hash</code></a>. In either case, the calculation
+<a href="../../../container_hash/index.html"><code>boost::hash</code></a>. In either case, the calculation
 does not involve hashing the associated <code>value_type</code> objects themselves; so, it is
 immaterial whether <code>value_type</code> is hashable or not.
 The results given by <code>std::hash</code> and <code>boost::hash</code> for the same
@@ -704,7 +703,7 @@ inline std::size_t hash_value(const flyweight&lt;T,Arg1,...,Arg5&gt;&amp; x) noe
 
 <blockquote>
 <b>Returns:</b> A hash value for <code>x</code> to be used by
-<a href="../../../../doc/html/hash/custom.html">Boost.Hash</a>.<br>
+<a href="../../../container_hash/doc/html/hash.html#user">Boost.ContainerHash</a>.<br>
 </blockquote>
 
 <h4><a name="config_macros">Configuration macros</a></h4>
@@ -792,7 +791,7 @@ Key-value flyweights
 
 <br>
 
-<p>Revised September 14th 2024</p>
+<p>Revised September 28th 2024</p>
 
 <p>&copy; Copyright 2006-2024 Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz.
 Distributed under the Boost Software 
