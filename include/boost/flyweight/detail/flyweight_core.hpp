@@ -210,7 +210,7 @@ public:
     return *static_mutex_ptr;
   }
 
-private:
+public:
   struct                              holder_arg
   {
     factory_type factory;

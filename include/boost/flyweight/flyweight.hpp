@@ -175,6 +175,7 @@ private:
 public:
   typedef typename value_policy::key_type      key_type;
   typedef typename value_policy::value_type    value_type;
+  typedef typename core::holder_arg            holder_arg;
 
   /* static data initialization */
 

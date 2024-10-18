@@ -29,7 +29,7 @@ void test_intermodule_holder()
 {
   //test_basic_template<intermodule_holder_flyweight_specifier1>();
 
-  std::cout<<"EXE: "<<typeid(intermodule_flyweight_string).name()<<std::endl;
+  std::cout<<"EXE: "<<typeid(intermodule_flyweight_string::holder_arg).name()<<std::endl;
   intermodule_flyweight_string str=
     create_intermodule_flyweight_string("boost");
   BOOST_TEST(str==intermodule_flyweight_string("boost"));
