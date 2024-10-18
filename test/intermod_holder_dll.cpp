@@ -9,9 +9,11 @@
  */
 
 #include "intermod_holder_dll.hpp"
+#include <iostream>
 
 intermodule_flyweight_string create_intermodule_flyweight_string(
   const std::string& str)
 {
+  std::cout<<"DLL: "<<typeid(intermodule_flyweight_string).name()<<std::endl;
   return intermodule_flyweight_string(str);
 }

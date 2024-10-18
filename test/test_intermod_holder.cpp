@@ -12,6 +12,7 @@
 
 #include "intermod_holder_dll.hpp"
 #include "test_basic_template.hpp"
+#include <iostream>
 
 using namespace boost::flyweights;
 
@@ -28,6 +29,7 @@ void test_intermodule_holder()
 {
   //test_basic_template<intermodule_holder_flyweight_specifier1>();
 
+  std::cout<<"EXE: "<<typeid(intermodule_flyweight_string).name()<<std::endl;
   intermodule_flyweight_string str=
     create_intermodule_flyweight_string("boost");
   BOOST_TEST(str==intermodule_flyweight_string("boost"));

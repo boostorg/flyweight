@@ -18,7 +18,6 @@
 #include <boost/flyweight/intermodule_holder_fwd.hpp>
 #include <boost/interprocess/detail/intermodule_singleton.hpp>
 #include <boost/mpl/aux_/lambda_support.hpp>
-#include <iostream>
 
 /* intermodule_holder_class guarantees a unique instance across all dynamic
  * modules of a program.
@@ -33,11 +32,6 @@ struct intermodule_holder_class:
   interprocess::ipcdetail::intermodule_singleton<C,true>,
   holder_marker
 {
-  intermodule_holder_class()
-  {
-    std::cout<<"C: "<<typeid(C).name()<<std::flush;
-  }
-
   typedef intermodule_holder_class type;
   BOOST_MPL_AUX_LAMBDA_SUPPORT(1,intermodule_holder_class,(C))
 };
