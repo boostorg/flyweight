@@ -20,6 +20,7 @@
 #include <boost/mpl/apply.hpp>
 #include <boost/type_traits/declval.hpp>
 #include <utility>
+#include <iostream>
 
 #if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
 #pragma warning(push)
@@ -158,6 +159,7 @@ public:
       static_factory_ptr=&a.factory;
       static_mutex_ptr=&a.mutex;
       static_initializer=(static_factory_ptr!=0);
+      std::cout<<"static_factory_ptr: "<<static_factory_ptr<<std::endl;
       return static_initializer;
     }
   }
