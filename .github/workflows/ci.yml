@@ -17,6 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+	    include:
           - toolset: gcc
             cxxstd: "11,14,17,2a"
             addrmd: 64
