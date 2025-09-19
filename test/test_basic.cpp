@@ -10,6 +10,7 @@
 
 #include "test_basic.hpp"
 
+#define BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/flyweight.hpp> 
 #include "test_basic_template.hpp"
