@@ -47,16 +47,15 @@
  */
 
 #include <boost/mpl/limits/arity.hpp>
-#include <boost/preprocessor/arithmetic/mul.hpp>
 #include <boost/preprocessor/facilities/intercept.hpp>
 #include <boost/preprocessor/repetition/enum_trailing_params.hpp>
 
 #define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION                  \
 BOOST_PP_ENUM_TRAILING_PARAMS(                                        \
-  BOOST_PP_MUL(BOOST_MPL_LIMIT_METAFUNCTION_ARITY,10),typename=int BOOST_PP_INTERCEPT)
+  BOOST_MPL_LIMIT_METAFUNCTION_ARITY,typename=int BOOST_PP_INTERCEPT)
 #define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF              \
 BOOST_PP_ENUM_TRAILING_PARAMS(                                        \
-  BOOST_PP_MUL(BOOST_MPL_LIMIT_METAFUNCTION_ARITY,10),typename BOOST_PP_INTERCEPT)
+  BOOST_MPL_LIMIT_METAFUNCTION_ARITY,typename BOOST_PP_INTERCEPT)
 
 #else
 #define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION  ,int=0

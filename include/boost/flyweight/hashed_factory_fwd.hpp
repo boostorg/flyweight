@@ -29,12 +29,29 @@ class hashed_factory_class;
 
 template<
   typename Hash=mpl::na,typename Pred=mpl::na,typename Allocator=mpl::na
-  BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION
+  ,int=666
+  //BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION
 >
 struct hashed_factory;
 
 } /* namespace flyweights */
 
 } /* namespace boost */
+
+namespace boost{
+namespace mpl{
+
+template<
+  template<typename,typename,typename,int> class F,
+  typename H,typename P,typename A,
+  typename Tag
+>
+struct lambda<F<H,P,A,666>,Tag>
+{
+  typedef F<H,P,A,666> type;
+};
+
+}
+}
 
 #endif

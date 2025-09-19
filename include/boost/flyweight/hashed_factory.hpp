@@ -103,7 +103,7 @@ public:
 
 template<
   typename Hash,typename Pred,typename Allocator
-  BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF
+  ,int//BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF
 >
 struct hashed_factory:factory_marker
 {
