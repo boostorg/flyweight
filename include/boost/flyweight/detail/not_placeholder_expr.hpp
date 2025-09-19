@@ -29,7 +29,7 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/config/workaround.hpp>
 
-#if 1||BOOST_WORKAROUND(__GNUC__, <4)||\
+#if BOOST_WORKAROUND(__GNUC__, <4)||\
     BOOST_WORKAROUND(__GNUC__,==4)&&(__GNUC_MINOR__<2)||\
     BOOST_WORKAROUND(__GNUC__, ==7)&&( __cplusplus>=201703L)||\
     BOOST_WORKAROUND(__GNUC__, >=8)&&( __cplusplus>=201103L)||\
