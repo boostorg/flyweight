@@ -29,6 +29,13 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/config/workaround.hpp>
 
+#ifdef __clang__
+#   pragma message("__clang__ defined")
+#   pragma message("clang major = " _CRT_STRINGIZE(__clang_major__))
+#else
+#   pragma message("__clang__ NOT defined")
+#endif
+
 #if BOOST_WORKAROUND(__GNUC__, <4)||\
     BOOST_WORKAROUND(__GNUC__,==4)&&(__GNUC_MINOR__<2)||\
     BOOST_WORKAROUND(__GNUC__, ==7)&&( __cplusplus>=201703L)||\
