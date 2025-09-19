@@ -46,6 +46,10 @@
  * parameters so as to exceed BOOST_MPL_LIMIT_METAFUNCTION_ARITY.
  */
 
+#ifdef __clang__
+#   pragma message("BOOST_MPL_LIMIT_METAFUNCTION_ARITY = " _CRT_STRINGIZE(BOOST_MPL_LIMIT_METAFUNCTION_ARITY))
+#endif
+
 #include <boost/mpl/limits/arity.hpp>
 #include <boost/preprocessor/facilities/intercept.hpp>
 #include <boost/preprocessor/repetition/enum_trailing_params.hpp>
