@@ -32,7 +32,8 @@
 #if BOOST_WORKAROUND(__GNUC__, <4)||\
     BOOST_WORKAROUND(__GNUC__,==4)&&(__GNUC_MINOR__<2)||\
     BOOST_WORKAROUND(__GNUC__, ==7)&&( __cplusplus>=201703L)||\
-    BOOST_WORKAROUND(__GNUC__, >=8)&&( __cplusplus>=201103L)
+    BOOST_WORKAROUND(__GNUC__, >=8)&&( __cplusplus>=201103L)||\
+    BOOST_WORKAROUND(__clang_major__,>=19)
 /* The default trick on which the macro is based, namely adding a int=0
  * defaulted template parameter, does not work in GCC prior to 4.2 due to
  * an unfortunate compiler non-standard extension, as explained in
@@ -40,6 +41,7 @@
  * As it happens, GCC 7 in C++17 mode and GCC 8 (and presumably later) in
  * C++11 mode (and presumably later) go back to this old behavior, anticipating
  * the resolution of CWG DR 150 (see P0522R0).
+ * Clang 19 and later also implement P0522R0 by default.
  * In these cases we resort to an uglier technique, adding defaulted template
  * parameters so as to exceed BOOST_MPL_LIMIT_METAFUNCTION_ARITY.
  */
