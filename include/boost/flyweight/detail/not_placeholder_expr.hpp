@@ -14,9 +14,9 @@
 #endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
+#include <boost/mpl/aux_/lambda_arity_param.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/lambda_fwd.hpp>
-#include <boost/mpl/aux_/lambda_arity_param.hpp>
 
 /* BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION can be inserted at the end
  * of a class template parameter declaration:
@@ -52,6 +52,15 @@ struct not_a_ph_expr;
   BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG
 #define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF \
 ,boost::flyweights::detail::not_a_ph_expr*
+
+/* Even though, under the definition given by Boost.MPL, the inclusion of a
+ * non-type template parameter makes a class template instantiation not a
+ * placeholder expression, https://wg21.link/p0522r0, which allows
+ * template-parameters to bind ignoring default arguments, causes
+ * boost::mpl::lambda to fail to properly honor
+ * BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION (in P0552R0-compliant
+ * compilers). We fix this by specializing boost::mpl::lambda accordingly.
+ */
 
 namespace boost{
 
