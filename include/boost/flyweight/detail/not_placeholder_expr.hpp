@@ -1,4 +1,4 @@
-/* Copyright 2006-2024 Joaquin M Lopez Munoz.
+/* Copyright 2006-2025 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -13,6 +13,11 @@
 #pragma once
 #endif
 
+#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
+#include <boost/mpl/bool.hpp>
+#include <boost/mpl/lambda_fwd.hpp>
+#include <boost/mpl/aux_/lambda_arity_param.hpp>
+
 /* BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION can be inserted at the end
  * of a class template parameter declaration:
  *   template<
@@ -26,40 +31,144 @@
  * MPL invocation.
  */
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/config/workaround.hpp>
+namespace boost{
 
-#if BOOST_WORKAROUND(__GNUC__, <4)||\
-    BOOST_WORKAROUND(__GNUC__,==4)&&(__GNUC_MINOR__<2)||\
-    BOOST_WORKAROUND(__GNUC__, ==7)&&( __cplusplus>=201703L)||\
-    BOOST_WORKAROUND(__GNUC__, >=8)&&( __cplusplus>=201103L)||\
-    BOOST_WORKAROUND(__clang_major__,>=19)
-/* The default trick on which the macro is based, namely adding a int=0
- * defaulted template parameter, does not work in GCC prior to 4.2 due to
- * an unfortunate compiler non-standard extension, as explained in
- *   http://lists.boost.org/boost-users/2007/07/29866.php
- * As it happens, GCC 7 in C++17 mode and GCC 8 (and presumably later) in
- * C++11 mode (and presumably later) go back to this old behavior, anticipating
- * the resolution of CWG DR 150 (see P0522R0).
- * Clang 19 and later also implement P0522R0 by default.
- * In these cases we resort to an uglier technique, adding defaulted template
- * parameters so as to exceed BOOST_MPL_LIMIT_METAFUNCTION_ARITY.
- */
+namespace flyweights{
 
-#include <boost/mpl/limits/arity.hpp>
-#include <boost/preprocessor/facilities/intercept.hpp>
-#include <boost/preprocessor/repetition/enum_trailing_params.hpp>
+namespace detail{
 
-#define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION                  \
-BOOST_PP_ENUM_TRAILING_PARAMS(                                        \
-  BOOST_MPL_LIMIT_METAFUNCTION_ARITY,typename=int BOOST_PP_INTERCEPT)
-#define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF              \
-BOOST_PP_ENUM_TRAILING_PARAMS(                                        \
-  BOOST_MPL_LIMIT_METAFUNCTION_ARITY,typename BOOST_PP_INTERCEPT)
+struct not_a_ph_expr;
 
-#else
-#define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION  ,int=0
-#define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF  ,int
-#endif
+} /* namespace flyweights::detail */
+
+} /* namespace flyweights */
+
+} /* namespace boost */
+
+#define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG \
+(boost::flyweights::detail::not_a_ph_expr*)0
+#define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION     \
+,boost::flyweights::detail::not_a_ph_expr* =             \
+  BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG
+#define BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF \
+,boost::flyweights::detail::not_a_ph_expr*
+
+namespace boost{
+
+namespace mpl{
+
+template<
+  template<
+    typename
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF
+  > class F,
+  typename T1,
+  typename Tag
+>
+struct lambda<
+  F<T1,BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG>,
+  Tag
+  BOOST_MPL_AUX_LAMBDA_ARITY_PARAM(int_<1>)
+>
+{
+  typedef false_                                     is_le;
+  typedef F<
+    T1,
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG
+  >                                                  result_;
+  typedef result_                                    type;
+};
+
+template<
+  template<
+    typename,typename
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF
+  > class F,
+  typename T1,typename T2,
+  typename Tag
+>
+struct lambda<
+  F<T1,T2,BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG>,
+  Tag
+  BOOST_MPL_AUX_LAMBDA_ARITY_PARAM(int_<2>)
+>
+{
+  typedef false_                                     is_le;
+  typedef F<
+    T1,T2,
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG
+  >                                                  result_;
+  typedef result_                                    type;
+};
+
+template<
+  template<
+    typename,typename,typename
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF
+  > class F,
+  typename T1,typename T2,typename T3,
+  typename Tag
+>
+struct lambda<
+  F<T1,T2,T3,BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG>,
+  Tag
+  BOOST_MPL_AUX_LAMBDA_ARITY_PARAM(int_<3>)
+>
+{
+  typedef false_                                     is_le;
+  typedef F<
+    T1,T2,T3,
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG
+  >                                                  result_;
+  typedef result_                                    type;
+};
+
+template<
+  template<
+    typename,typename,typename,typename
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF
+  > class F,
+  typename T1,typename T2,typename T3,typename T4,
+  typename Tag
+>
+struct lambda<
+  F<T1,T2,T3,T4,BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG>,
+  Tag
+  BOOST_MPL_AUX_LAMBDA_ARITY_PARAM(int_<4>)
+>
+{
+  typedef false_                                     is_le;
+  typedef F<
+    T1,T2,T3,T4,
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG
+  >                                                  result_;
+  typedef result_                                    type;
+};
+
+template<
+  template<
+    typename,typename,typename,typename,typename
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_DEF
+  > class F,
+  typename T1,typename T2,typename T3,typename T4,typename T5,
+  typename Tag
+>
+struct lambda<
+  F<T1,T2,T3,T4,T5,BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG>,
+  Tag
+  BOOST_MPL_AUX_LAMBDA_ARITY_PARAM(int_<5>)
+>
+{
+  typedef false_                                     is_le;
+  typedef F<
+    T1,T2,T3,T4,T5,
+    BOOST_FLYWEIGHT_NOT_A_PLACEHOLDER_EXPRESSION_ARG
+  >                                                  result_;
+  typedef result_                                    type;
+};
+
+} /* namespace mpl */
+
+} /* namespace boost */
 
 #endif
