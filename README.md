@@ -6,7 +6,7 @@
 
 Flyweights are small-sized handle classes granting constant access to shared common data, thus allowing for the management
 of large amounts of entities within reasonable memory limits. Boost.Flyweight makes it easy to use this common programming
-idiom by providing the class template `flyweight<T>`, which acts as a drop-in replacement for `const T`.
+idiom by providing the class template `flyweight<T>`, which acts as a drop-in replacement for `const T&`.
 
 ## Learn about Boost.Flyweight
 
